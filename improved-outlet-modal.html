@@ -1,0 +1,899 @@
+<!-- Improved Add/Edit Outlet Modal -->
+<div class="modal fade" id="addNewOutletModal" tabindex="-1" aria-labelledby="addNewOutletModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h1 id="addNewOutletModalLabel" class="modal-title fs-4 fw-bold">
+                    <i class="fa-solid fa-store me-2"></i>
+                    <span id="modalTitle">Add New Outlet</span>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="outlet_form" novalidate>
+
+                    <!-- Basic Information Section -->
+                    <div class="section-header mb-3">
+                        <h5 class="text-primary mb-0">
+                            <i class="fa-solid fa-info-circle me-2"></i>
+                            Basic Information
+                        </h5>
+                        <hr class="mt-2">
+                    </div>
+
+                    <!-- Outlet Name (English) -->
+                    <div class="row mb-3">
+                        <label for="outlet_name_english" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                            Name (English) <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <input
+                                id="outlet_name_english"
+                                type="text"
+                                name="name_english"
+                                class="form-control"
+                                placeholder="Enter outlet name in English"
+                                required
+                                aria-required="true">
+                            <div class="invalid-feedback">
+                                Please provide the outlet name in English.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outlet Name (Arabic) -->
+                    <div class="row mb-3">
+                        <label for="outlet_name_arabic" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                            Name (Arabic) <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <input
+                                id="outlet_name_arabic"
+                                type="text"
+                                name="name_arabic"
+                                class="form-control"
+                                placeholder="أدخل اسم المنفذ بالعربية"
+                                dir="rtl"
+                                required
+                                aria-required="true">
+                            <div class="invalid-feedback">
+                                Please provide the outlet name in Arabic.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outlet Type -->
+                    <div class="row mb-3">
+                        <label for="outlet_type" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                            Type <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <select
+                                id="outlet_type"
+                                name="type"
+                                class="form-select"
+                                onchange="toggle_ramadanTentAttachments(this);"
+                                required
+                                aria-required="true">
+                                <option value="" selected disabled>-- Select Outlet Type --</option>
+                                <option value="449930017">Ramadan Tent</option>
+                                <option value="449930018">Restaurant</option>
+                                <option value="449930019">Cafe</option>
+                                <option value="449930020">Bar</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select an outlet type.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="row mb-3">
+                        <label for="outlet_location" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                            Location <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <input
+                                id="outlet_location"
+                                type="text"
+                                name="location"
+                                class="form-control"
+                                placeholder="e.g., Floor 2, Building A"
+                                required
+                                aria-required="true">
+                            <div class="form-text">Specify the floor number or location details</div>
+                            <div class="invalid-feedback">
+                                Please provide the outlet location.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capacity -->
+                    <div class="row mb-3">
+                        <label for="outlet_capacity" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                            Capacity <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input
+                                    id="outlet_capacity"
+                                    type="number"
+                                    name="outlet_capacity"
+                                    class="form-control"
+                                    placeholder="Maximum number of customers"
+                                    min="1"
+                                    max="9999"
+                                    required
+                                    aria-required="true">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-users"></i>
+                                </span>
+                            </div>
+                            <div class="form-text">Maximum capacity of customers allowed</div>
+                            <div class="invalid-feedback">
+                                Please provide a valid capacity (1-9999).
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Is Serving Hookah -->
+                    <div class="row mb-4">
+                        <label class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                            Serving Hookah? <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="btn-group" role="group" aria-label="Hookah service options">
+                                <input
+                                    type="radio"
+                                    class="btn-check"
+                                    name="outlet_is_serving_hookah"
+                                    id="outlet_is_serving_hookah_yes"
+                                    value="true"
+                                    required>
+                                <label class="btn btn-outline-success" for="outlet_is_serving_hookah_yes">
+                                    <i class="fa-solid fa-check me-1"></i> Yes
+                                </label>
+
+                                <input
+                                    type="radio"
+                                    class="btn-check"
+                                    name="outlet_is_serving_hookah"
+                                    id="outlet_is_serving_hookah_no"
+                                    value="false"
+                                    required>
+                                <label class="btn btn-outline-danger" for="outlet_is_serving_hookah_no">
+                                    <i class="fa-solid fa-times me-1"></i> No
+                                </label>
+                            </div>
+                            <div class="invalid-feedback d-block" id="hookah_error" style="display: none !important;">
+                                Please select whether the outlet serves hookah.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- POS Information Section -->
+                    <div class="card border-primary mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-cash-register me-2"></i>
+                                Point of Sale (POS) Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- POS Exists -->
+                            <div class="row mb-3">
+                                <label for="outlet_is_pos_exist" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    POS System Exists?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            id="outlet_is_pos_exist"
+                                            name="outlet_is_pos_exist"
+                                            value="true"
+                                            onchange="togglePosName(this, 'outlet_pos_name')"
+                                            role="switch">
+                                        <label class="form-check-label" for="outlet_is_pos_exist">
+                                            Yes, this outlet has a POS system
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- POS Name -->
+                            <div class="row mb-3" id="pos_name_container">
+                                <label for="outlet_pos_name" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    POS Name
+                                </label>
+                                <div class="col-sm-9">
+                                    <input
+                                        id="outlet_pos_name"
+                                        type="text"
+                                        name="outlet_pos_name"
+                                        class="form-control"
+                                        placeholder="e.g., Oracle Micros, Toast POS">
+                                    <div class="form-text">Enter the name/brand of the POS system</div>
+                                </div>
+                            </div>
+
+                            <!-- POS Integrated -->
+                            <div class="row mb-3">
+                                <label for="outlet_is_pos_integrated" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    POS Integrated?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input"
+                                            id="outlet_is_pos_integrated"
+                                            name="outlet_is_pos_integrated"
+                                            value="true"
+                                            role="switch">
+                                        <label class="form-check-label" for="outlet_is_pos_integrated">
+                                            Yes, POS is integrated with hotel management system
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PMS ID -->
+                            <div class="row mb-3">
+                                <label for="outlet_pms_id" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    PMS ID
+                                </label>
+                                <div class="col-sm-9">
+                                    <input
+                                        id="outlet_pms_id"
+                                        type="text"
+                                        name="outlet_pms_id"
+                                        class="form-control"
+                                        placeholder="Property Management System ID">
+                                    <div class="form-text">Enter the PMS identifier if applicable</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Management Information Section -->
+                    <div class="card border-success mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-user-tie me-2"></i>
+                                Management Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- Management Type -->
+                            <div class="row mb-3">
+                                <label for="outlet_management_type" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Management Type <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <select
+                                        id="outlet_management_type"
+                                        name="management_type"
+                                        class="form-select"
+                                        onchange="toggle_outletManagementType(this);"
+                                        required>
+                                        <option value="449930000" selected>Self Operated</option>
+                                        <option value="449930001">Outsourced</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a management type.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Manager Name -->
+                            <div class="row mb-3">
+                                <label for="outlet_manager_name" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Manager Name <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                        <input
+                                            id="outlet_manager_name"
+                                            type="text"
+                                            name="manager_name"
+                                            class="form-control"
+                                            placeholder="Full name of the manager"
+                                            required>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please provide the manager's name.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Manager CPR -->
+                            <div class="row mb-3">
+                                <label for="outlet_manager_cpr" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Manager CPR <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa-solid fa-id-card"></i>
+                                        </span>
+                                        <input
+                                            id="outlet_manager_cpr"
+                                            type="text"
+                                            name="manager_cpr"
+                                            class="form-control"
+                                            placeholder="Civil Personal Registration number"
+                                            pattern="[0-9]{9}"
+                                            maxlength="9"
+                                            required>
+                                    </div>
+                                    <div class="form-text">9-digit CPR number</div>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid 9-digit CPR number.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Manager Phone -->
+                            <div class="row mb-3">
+                                <label for="outlet_manager_phone" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Manager Phone <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa-solid fa-phone"></i>
+                                        </span>
+                                        <input
+                                            id="outlet_manager_phone"
+                                            type="tel"
+                                            name="manager_phone"
+                                            class="form-control"
+                                            placeholder="+973 XXXX XXXX"
+                                            pattern="[+0-9\s\-]{8,15}"
+                                            required>
+                                    </div>
+                                    <div class="form-text">Contact phone number with country code</div>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid phone number.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Manager Email -->
+                            <div class="row mb-3">
+                                <label for="outlet_manager_email" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Manager Email <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </span>
+                                        <input
+                                            id="outlet_manager_email"
+                                            type="email"
+                                            name="manager_email"
+                                            class="form-control"
+                                            placeholder="manager@example.com"
+                                            maxlength="100"
+                                            required>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid email address.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Leasing Contract Section (Conditional) -->
+                    <div id="cardLeasing" class="card border-warning mb-4" style="display: none;">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-file-contract me-2"></i>
+                                Leasing Contract Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- Leasing Office CR -->
+                            <div class="row mb-3">
+                                <label for="leasing_office_cr" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Leasing Office (CR) <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fa-solid fa-building"></i>
+                                        </span>
+                                        <input
+                                            id="leasing_office_cr"
+                                            type="text"
+                                            name="leasing_office_cr"
+                                            class="form-control"
+                                            placeholder="Commercial Registration Number">
+                                    </div>
+                                    <div class="form-text">Enter the CR number to auto-fill office details</div>
+                                </div>
+                            </div>
+
+                            <!-- Leasing Office Name -->
+                            <div class="row mb-3">
+                                <label for="leasing_office_name" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Leasing Office Name
+                                </label>
+                                <div class="col-sm-9">
+                                    <input
+                                        id="leasing_office_name"
+                                        type="text"
+                                        name="leasing_office_name"
+                                        class="form-control"
+                                        placeholder="Office name (auto-filled)"
+                                        readonly>
+                                </div>
+                            </div>
+
+                            <!-- Contract From Date -->
+                            <div class="row mb-3">
+                                <label for="outlet_from" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Contract Start Date <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-calendar"></i>
+                                            </span>
+                                            <input
+                                                type="text"
+                                                id="outlet_from"
+                                                name="from"
+                                                class="form-control leased"
+                                                placeholder="Select start date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contract To Date -->
+                            <div class="row mb-3">
+                                <label for="outlet_to" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Contract End Date <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-calendar"></i>
+                                            </span>
+                                            <input
+                                                type="text"
+                                                id="outlet_to"
+                                                name="to"
+                                                class="form-control leased"
+                                                placeholder="Select end date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Leasing Contract Document -->
+                            <div class="row mb-3">
+                                <label for="att_leasing" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Contract Document <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input
+                                        type="file"
+                                        id="att_leasing"
+                                        name="att_leasing"
+                                        class="form-control"
+                                        accept=".pdf,.doc,.docx"
+                                        onchange="validateAttachments()">
+                                    <div class="form-text">Upload the leasing contract (PDF, DOC, DOCX - Max 10MB)</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Ramadan Tent Information Section (Conditional) -->
+                    <div id="cardRamadanFields" class="card border-info mb-4" style="display: none;">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-mosque me-2"></i>
+                                Ramadan Tent Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- Ramadan Tent Location Arabic -->
+                            <div class="row mb-3">
+                                <label for="ramadan_tent_loc_ar" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Location (Arabic) <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <textarea
+                                        id="ramadan_tent_loc_ar"
+                                        name="ramadan_tent_loc_ar"
+                                        class="form-control"
+                                        rows="3"
+                                        maxlength="199"
+                                        placeholder="وصف موقع خيمة رمضان"
+                                        dir="rtl"></textarea>
+                                    <div class="form-text">Maximum 199 characters</div>
+                                </div>
+                            </div>
+
+                            <!-- Ramadan Tent Location English -->
+                            <div class="row mb-3">
+                                <label for="ramadan_tent_loc_en" class="col-sm-3 col-form-label text-sm-end fw-semibold">
+                                    Location (English) <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <textarea
+                                        id="ramadan_tent_loc_en"
+                                        name="ramadan_tent_loc_en"
+                                        class="form-control"
+                                        rows="3"
+                                        maxlength="199"
+                                        placeholder="Describe the Ramadan tent location"></textarea>
+                                    <div class="form-text">Maximum 199 characters</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Ramadan Tent Attachments Section (Conditional) -->
+                    <div id="cardRamadanAtts" class="card border-danger mb-4" style="display: none;">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0">
+                                <i class="fa-solid fa-file-upload me-2"></i>
+                                Ramadan Tent Required Documents
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info mb-3">
+                                <i class="fa-solid fa-info-circle me-2"></i>
+                                All documents are required for Ramadan Tent outlets. Please ensure files are in PDF format and do not exceed 10MB each.
+                            </div>
+
+                            <!-- Civil Defence Approval -->
+                            <div class="row mb-3">
+                                <label for="att_1" class="col-sm-5 col-form-label text-sm-end fw-semibold">
+                                    General Directorate of Civil Defence
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input
+                                        type="file"
+                                        id="att_1"
+                                        name="att_1"
+                                        class="form-control"
+                                        accept=".pdf"
+                                        onchange="validateAttachments()"
+                                        required>
+                                    <div class="form-text">Civil Defence approval letter (PDF)</div>
+                                </div>
+                            </div>
+
+                            <!-- Ministry of Health Approval -->
+                            <div class="row mb-3">
+                                <label for="att_2" class="col-sm-5 col-form-label text-sm-end fw-semibold">
+                                    Ministry of Health - Public Health Directorate
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input
+                                        type="file"
+                                        id="att_2"
+                                        name="att_2"
+                                        class="form-control"
+                                        accept=".pdf"
+                                        onchange="validateAttachments()"
+                                        required>
+                                    <div class="form-text">Health approval letter (PDF)</div>
+                                </div>
+                            </div>
+
+                            <!-- Posture Attachment -->
+                            <div class="row mb-3">
+                                <label for="att_3" class="col-sm-5 col-form-label text-sm-end fw-semibold">
+                                    Posture/Layout Document
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input
+                                        type="file"
+                                        id="att_3"
+                                        name="att_3"
+                                        class="form-control"
+                                        accept=".pdf"
+                                        onchange="validateAttachments()"
+                                        required>
+                                    <div class="form-text">Tent layout/posture plan (PDF)</div>
+                                </div>
+                            </div>
+
+                            <!-- Ministry of Municipalities Approval -->
+                            <div class="row mb-3">
+                                <label for="att_4" class="col-sm-5 col-form-label text-sm-end fw-semibold">
+                                    Ministry of Municipalities Affairs and Agriculture
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input
+                                        type="file"
+                                        id="att_4"
+                                        name="att_4"
+                                        class="form-control"
+                                        accept=".pdf"
+                                        onchange="validateAttachments()"
+                                        required>
+                                    <div class="form-text">Municipality approval letter (PDF)</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-times me-2"></i>
+                    Cancel
+                </button>
+                <button
+                    id="createOutletButton"
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="submitOutletForm('create')">
+                    <i class="fa-solid fa-plus me-2"></i>
+                    Create New Outlet
+                </button>
+                <button
+                    id="updateChangesButton"
+                    type="button"
+                    class="btn btn-success"
+                    style="display: none;"
+                    onclick="submitOutletForm('update')">
+                    <i class="fa-solid fa-save me-2"></i>
+                    Update Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Styles -->
+<style>
+    /* Section Headers */
+    .section-header {
+        margin-top: 1.5rem;
+    }
+
+    /* Card Headers */
+    .card-header h5 {
+        font-size: 1rem;
+    }
+
+    /* Form Labels */
+    .col-form-label.fw-semibold {
+        font-weight: 600 !important;
+    }
+
+    /* Required Field Indicator */
+    .text-danger {
+        font-weight: bold;
+    }
+
+    /* Input Groups */
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+    }
+
+    .input-group .form-control {
+        border-left: none;
+    }
+
+    .input-group:focus-within .input-group-text {
+        border-color: #86b7fe;
+        background-color: #e7f1ff;
+    }
+
+    /* File Input Styling */
+    .form-control[type="file"] {
+        padding: 0.375rem 0.75rem;
+    }
+
+    /* Card Borders */
+    .card {
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
+    }
+
+    /* Modal Dialog */
+    .modal-xl {
+        max-width: 1140px;
+    }
+
+    /* Form Text */
+    .form-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    /* Radio Button Groups */
+    .btn-check:checked + .btn-outline-success {
+        background-color: #198754;
+        border-color: #198754;
+    }
+
+    .btn-check:checked + .btn-outline-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    /* Alert Box */
+    .alert-info {
+        border-left: 4px solid #0dcaf0;
+    }
+
+    /* Textarea */
+    textarea.form-control {
+        resize: vertical;
+    }
+
+    /* Switch Styling */
+    .form-switch .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+    }
+
+    .form-switch .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
+
+    /* Smooth transitions */
+    .card, .btn, input, select, textarea {
+        transition: all 0.2s ease;
+    }
+</style>
+
+<!-- Form Validation Script -->
+<script>
+    // Form Validation
+    (function() {
+        'use strict';
+
+        // Toggle POS Name field based on checkbox
+        window.togglePosName = function(checkbox, targetId) {
+            const posNameContainer = document.getElementById('pos_name_container');
+            const posNameInput = document.getElementById(targetId);
+
+            if (checkbox.checked) {
+                posNameInput.removeAttribute('disabled');
+                posNameContainer.style.opacity = '1';
+            } else {
+                posNameInput.setAttribute('disabled', 'disabled');
+                posNameInput.value = '';
+                posNameContainer.style.opacity = '0.5';
+            }
+        };
+
+        // Toggle Ramadan Tent fields
+        window.toggle_ramadanTentAttachments = function(select) {
+            const ramadanFields = document.getElementById('cardRamadanFields');
+            const ramadanAtts = document.getElementById('cardRamadanAtts');
+
+            if (select.value === '449930017') { // Ramadan Tent
+                ramadanFields.style.display = 'block';
+                ramadanAtts.style.display = 'block';
+            } else {
+                ramadanFields.style.display = 'none';
+                ramadanAtts.style.display = 'none';
+            }
+        };
+
+        // Toggle Management Type fields (Leasing)
+        window.toggle_outletManagementType = function(select) {
+            const leasingCard = document.getElementById('cardLeasing');
+
+            if (select.value === '449930001') { // Outsourced
+                leasingCard.style.display = 'block';
+            } else {
+                leasingCard.style.display = 'none';
+            }
+        };
+
+        // Validate Attachments
+        window.validateAttachments = function() {
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            let isValid = true;
+
+            fileInputs.forEach(input => {
+                if (input.files.length > 0) {
+                    const file = input.files[0];
+                    const maxSize = 10 * 1024 * 1024; // 10MB
+
+                    if (file.size > maxSize) {
+                        alert(`File ${file.name} exceeds the maximum size of 10MB`);
+                        input.value = '';
+                        isValid = false;
+                    }
+                }
+            });
+
+            return isValid;
+        };
+
+        // Submit Form
+        window.submitOutletForm = function(action) {
+            const form = document.getElementById('outlet_form');
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+
+                // Find first invalid field and scroll to it
+                const firstInvalid = form.querySelector(':invalid');
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstInvalid.focus();
+                }
+
+                return false;
+            }
+
+            if (!validateAttachments()) {
+                return false;
+            }
+
+            // Process form submission
+            const formData = new FormData(form);
+
+            if (action === 'create') {
+                console.log('Creating new outlet...');
+                // Add your create logic here
+            } else if (action === 'update') {
+                console.log('Updating outlet...');
+                // Add your update logic here
+            }
+
+            // Close modal after successful submission
+            // const modal = bootstrap.Modal.getInstance(document.getElementById('addNewOutletModal'));
+            // modal.hide();
+        };
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state for POS Name field
+            const posExistCheckbox = document.getElementById('outlet_is_pos_exist');
+            if (posExistCheckbox && !posExistCheckbox.checked) {
+                togglePosName(posExistCheckbox, 'outlet_pos_name');
+            }
+        });
+    })();
+</script>

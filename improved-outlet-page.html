@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BTEA E-services - Edit Outlet</title>
+
+    <!-- Core CSS -->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="/Content/assets/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="/Content/assets/fontawesome/css/solid.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="/Content/arkalite/styles/lib/select2.min.css">
+    <link rel="stylesheet" href="/Content/arkalite/styles/lib/bootstrap-datetimepicker.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/css/outlet-styles.css">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar bg-white fixed-top shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand">
+                <img alt="BTEA Logo" src="/Content/images/btea-logo-tr-002.png" height="55" width="220">
+            </a>
+
+            <div class="d-flex align-items-center gap-3">
+                <!-- Facility Selector -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary d-flex gap-2 justify-content-between align-items-center"
+                            type="button" data-bs-toggle="dropdown" style="width: 450px;">
+                        <h6 class="mb-0">
+                            <strong>test hotel 232</strong>
+                            <small class="text-muted">(1120-1)</small>
+                        </h6>
+                        <span>Owner <i class="fa-solid fa-caret-down"></i></span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end facility-dropdown">
+                        <!-- Search Box -->
+                        <li class="px-3 py-2 sticky-top bg-white border-bottom">
+                            <div class="position-relative">
+                                <i class="fa-solid fa-search position-absolute search-icon"></i>
+                                <input type="text" class="form-control search-input"
+                                       id="facilitySearchInput" placeholder="Search facility, CR, or type...">
+                                <button class="btn clear-btn position-absolute" id="clearSearchBtn" style="display: none;">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted d-block mt-2" id="searchResultCount"></small>
+                        </li>
+
+                        <!-- Facilities List -->
+                        <li class="facilities-list" id="facilitiesList">
+                            <!-- Facility items will be loaded here -->
+                        </li>
+
+                        <li class="text-center py-4" id="noResultsMsg" style="display: none;">
+                            <i class="fa-solid fa-search opacity-25" style="font-size: 2.5em;"></i>
+                            <p class="mb-0 mt-3">No facilities found</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Dashboard Link -->
+                <a href="/Login/Dashboard" class="text-primary" title="Dashboard">
+                    <img src="/Content/download.svg" alt="Dashboard">
+                </a>
+
+                <!-- User Menu -->
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-circle-user fa-lg"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="text-center"><strong>ABF</strong></li>
+                        <li><a class="dropdown-item" href="/MyProfile">My Profile</a></li>
+                        <li><a class="dropdown-item" href="/Login/signout">Sign Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="expand">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="fa-solid fa-bars fa-lg"></i>
+                </button>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="/Main" class="sidebar-link">
+                        <i class="fa-solid fa-house fa-lg"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/Profile/ShowProfile" class="sidebar-link">
+                        <i class="fa-solid fa-address-card fa-lg"></i>
+                        <span>Full Profile</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/Main/AllPayments" class="sidebar-link">
+                        <i class="fa-solid fa-money-check-dollar fa-lg"></i>
+                        <span>Previous Payments</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item ps-3 fw-bold groupItem"><br>Licensing</li>
+
+                <li class="sidebar-item">
+                    <a href="/ArtistBand" class="sidebar-link">
+                        <i class="fa-solid fa-music fa-lg"></i>
+                        <span>Artist Permission</span>
+                        <span class="badge bg-warning ms-2">New</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/Closing/viewRequests" class="sidebar-link">
+                        <i class="fa-solid fa-lock fa-lg"></i>
+                        <span>Close/Reopen Property</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/ReviveProperty" class="sidebar-link">
+                        <i class="fa-solid fa-refresh fa-lg"></i>
+                        <span>Revive Property</span>
+                        <span class="badge bg-warning ms-2">New</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/EditLicense" class="sidebar-link">
+                        <i class="fa-solid fa-pen fa-lg"></i>
+                        <span>Edit License</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/EditOutlet/ViewRequests" class="sidebar-link">
+                        <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
+                        <span>Edit Outlet</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/ExptPart" class="sidebar-link">
+                        <i class="fa fa-globe fa-lg"></i>
+                        <span>Exhibition Participation</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/RegularUpdate/ViewUpdates" class="sidebar-link">
+                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                        <span>Property Update</span>
+                    </a>
+                </li>
+
+                <!-- Additional menu items... -->
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main p-4">
+            <div class="content-header">
+                <h1>Edit Outlet</h1>
+                <hr>
+            </div>
+
+            <div id="outlet_form">
+                <form action="/EditOutlet/doUpdate" method="post" enctype="multipart/form-data" id="outletUpdateForm">
+                    <input type="hidden" name="draftId" value="20033985-e671-f011-b4cc-000d3ab8e275">
+                    <input type="hidden" name="outletRequestId" value="0a66facd-e671-f011-b4cb-6045bddda5c1">
+                    <input type="hidden" name="preSelectOutletType" value="0">
+
+                    <!-- Processing Outlets Table -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h4>Processing Outlets</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="tblProcessingOutlets" class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Outlet Name (EN)</th>
+                                            <th>Outlet Name (AR)</th>
+                                            <th>Status</th>
+                                            <th>Type</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(outlet, index) in src.processingOutlets"
+                                            :key="index"
+                                            v-if="outlet.db_status != 2">
+                                            <td>{{ outlet.name }}</td>
+                                            <td>{{ outlet.arabic_name }}</td>
+                                            <td>{{ outlet.status }}</td>
+                                            <td>{{ outlet.typestr }}</td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-secondary me-1"
+                                                        @click="openEditForm(outlet, index)"
+                                                        title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-danger"
+                                                        @click="deleteOutlet(outlet, index)"
+                                                        title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-primary" @click="createNewOutlet" data-bs-toggle="modal" data-bs-target="#addNewOutletModal">
+                                    <i class="fa fa-plus"></i> Add New Outlet
+                                </button>
+                                <button type="button" class="btn btn-secondary ms-2" @click="openEditOutletModal" data-bs-toggle="modal" data-bs-target="#existingOutletsModal">
+                                    <i class="fa fa-edit"></i> Edit Existing Outlet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Validation Errors -->
+                    <div v-if="outletErrors.length > 0 && !src.isExceptional" class="alert alert-danger">
+                        <h5>Validation Errors:</h5>
+                        <ul class="mb-0">
+                            <li v-for="error in outletErrors" :key="error">{{ error }}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button id="submission_button"
+                                type="submit"
+                                class="btn btn-primary btn-lg"
+                                :disabled="isSubmitButtonDisabled">
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Reference Link -->
+            <div class="mt-4">
+                <a href="/Content/docs/Hotels Classification Decree.pdf" target="_blank">
+                    <i class="fa fa-file-pdf"></i> Hotels Classification Decree (Resolution No. 4/2015)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add New Outlet Modal -->
+    <div class="modal fade" id="addNewOutletModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Outlet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Outlet Form Fields -->
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Name (English)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="newOutlet.name" placeholder="Outlet Name (English)">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Name (Arabic)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="newOutlet.arabic_name" placeholder="Outlet Name (Arabic)">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Type</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" v-model="newOutlet.type" @change="toggle_ramadanTentAttachments">
+                                <option value="">Select Type</option>
+                                <option v-for="type in src.outletTypes" :value="type.Key" :key="type.Key">
+                                    {{ type.Value }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Location</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="newOutlet.location" placeholder="Floor Number">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Capacity</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" v-model="newOutlet.capacity" placeholder="Maximum capacity">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Serving Hookah?</label>
+                        <div class="col-sm-9">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" v-model="newOutlet.isServingHookah" :value="true" id="hookah_yes">
+                                <label class="form-check-label" for="hookah_yes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" v-model="newOutlet.isServingHookah" :value="false" id="hookah_no">
+                                <label class="form-check-label" for="hookah_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- POS Section -->
+                    <div class="card mb-3">
+                        <div class="card-header">POS Information</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">POS Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.pos_name" placeholder="POS Name">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">PMS ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.pms_id" placeholder="PMS ID">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">POS Integrated</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" v-model="newOutlet.pos_integrated" id="pos_integrated">
+                                        <label class="form-check-label" for="pos_integrated">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Management Section -->
+                    <div class="card mb-3">
+                        <div class="card-header">Management Information</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Management Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" v-model="newOutlet.management_type" @change="toggle_outletManagementType">
+                                        <option :value="449930000">Self Operated</option>
+                                        <option :value="449930001">Outsourced</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.manager_name" placeholder="Manager Name">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager CPR</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.manager_cpr" placeholder="Manager CPR">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="tel" class="form-control" v-model="newOutlet.manager_phone" placeholder="Manager Phone">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" v-model="newOutlet.manager_email" placeholder="Manager Email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ramadan Tent Fields (conditional) -->
+                    <div class="card mb-3" id="cardRamadanFields" v-show="newOutlet.type == 449930017">
+                        <div class="card-header">Ramadan Tent Information</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Location (Arabic)</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.ramadan_tent_loc_ar" placeholder="Location Description (Arabic)">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Location (English)</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.ramadan_tent_loc_en" placeholder="Location Description (English)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" @click="addNewOutletToArray(isOpenForEdit ? 'edit' : 'add')">
+                        {{ isOpenForEdit ? 'Update' : 'Add' }} Outlet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Existing Outlet Modal -->
+    <div class="modal fade" id="existingOutletsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Existing Outlet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Outlet Selection -->
+                    <div v-show="showOutlets">
+                        <h5>Select Outlet:</h5>
+                        <select class="form-select mb-3" v-model="selectedOutlet.id" @change="setSelectedOutlet">
+                            <option value="">Please select an outlet</option>
+                            <option v-for="outlet in src.outlets" :value="outlet.id" :key="outlet.id">
+                                {{ outlet.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Service Selection -->
+                    <div v-show="showOptions">
+                        <h5>Select Service:</h5>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="change_name" @change="checkOptions">
+                                <label class="form-check-label" for="change_name">Change outlet name</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="change_location" @change="checkOptions">
+                                <label class="form-check-label" for="change_location">Change outlet location</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="change_type" @change="checkOptions">
+                                <label class="form-check-label" for="change_type">Change outlet type</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="close_outlet" @change="checkOptions" :disabled="isOpenOutletSelected">
+                                <label class="form-check-label" for="close_outlet">Temporarily close outlet</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="open_outlet" @change="checkOptions" :disabled="isCloseOutletSelected">
+                                <label class="form-check-label" for="open_outlet">Re-open outlet</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="delete_outlet" @change="checkOptions" :disabled="isSelect_without_deleteOutlet">
+                                <label class="form-check-label" for="delete_outlet">Delete outlet (shutdown)</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="change_hookah_service" @change="checkOptions">
+                                <label class="form-check-label" for="change_hookah_service">Change hookah service</label>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" @click="doneOptions">Continue</button>
+                    </div>
+
+                    <!-- Edit Form -->
+                    <div v-show="showEditForm">
+                        <!-- Edit form fields based on selected options -->
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" @click="isDeleteOutletSelected ? addDeleteRequest() : (isOpenForEdit ? updateExistingOutletChanges() : addExistingOutletToArray())">
+                        {{ isDeleteOutletSelected ? 'Delete' : (isOpenForEdit ? 'Update' : 'Add') }} Outlet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/Scripts/jquery-3.7.1.min.js"></script>
+    <script src="/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="/Content/vue.js"></script>
+    <script src="/Content/arkalite/js/lib/moment.min.js"></script>
+    <script src="/Content/arkalite/js/lib/select2.full.min.js"></script>
+    <script src="/Content/arkalite/js/lib/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="/js/outlet-app.js"></script>
+    <script src="/js/sidebar.js"></script>
+    <script src="/js/facility-search.js"></script>
+    <script src="/js/session-management.js"></script>
+</body>
+</html>

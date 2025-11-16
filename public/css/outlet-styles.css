@@ -1,0 +1,455 @@
+/* ===========================
+   BTEA Outlet Management Styles
+   =========================== */
+
+/* Fonts */
+@font-face {
+    font-family: 'dinlightregular';
+    src: url('../../content/frontpage/dinlightregular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'dinmedium';
+    src: url('../../content/frontpage/dinmedium.otf') format('opentype');
+}
+
+/* Base Styles */
+body {
+    font-family: dinlightregular, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 81px;
+}
+
+h1, h2, h4, h5, .alert, th {
+    font-family: dinmedium, sans-serif;
+}
+
+h1 {
+    color: #8a3d6f;
+}
+
+/* Remove number input spinners */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Navigation */
+nav {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    padding-right: 20px;
+}
+
+/* Buttons */
+.btn-btea-primary {
+    color: #FFF;
+    background-color: #815374;
+    border-color: #6d4460;
+}
+
+.btn-btea-primary:hover {
+    color: #FFF;
+    background-color: #6d4460;
+    border-color: #59314c;
+}
+
+.btn-btea-outline-primary {
+    color: #815374;
+    background-color: transparent;
+    border: 1px solid #815374;
+}
+
+.btn-btea-outline-primary:hover {
+    color: #FFF;
+    background-color: #815374;
+    border-color: #6d4460;
+}
+
+.text-btea {
+    color: #815374 !important;
+}
+
+/* Cards */
+.card {
+    --bs-card-spacer-y: 2rem;
+    --bs-card-spacer-x: 2.5rem;
+    --bs-card-cap-padding-x: 2.5rem;
+}
+
+.card-header {
+    background-color: white;
+    color: black;
+    border-bottom: 0;
+}
+
+/* Wrapper Layout */
+.wrapper {
+    display: flex;
+    min-height: calc(100vh - 81px);
+    overflow: hidden;
+}
+
+.main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    transition: all 0.35s ease-in-out;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    height: calc(100vh - 81px);
+    overflow-y: auto;
+    background-color: white;
+    transition: all 0.3s ease;
+    position: sticky;
+    top: 81px;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+#sidebar {
+    scrollbar-width: none;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+}
+
+/* Sidebar Navigation */
+.sidebar-logo a {
+    color: black;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-btn i {
+    font-size: 1.5rem;
+    color: black;
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+    flex: 1 1 auto;
+    list-style-type: none;
+}
+
+.sidebar-item {
+    position: relative;
+    padding: 5px 10px 5px 1px;
+}
+
+#sidebar.expand .sidebar-item {
+    padding-top: 5px;
+}
+
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: black;
+    display: block;
+    font-size: 1rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+}
+
+.sidebar-link i {
+    font-size: 1.1rem;
+    margin-right: 0.6rem;
+}
+
+a.sidebar-link:hover {
+    background-color: rgba(129, 83, 116, 0.075);
+    border-left: 3px solid #815374;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+}
+
+/* Facility Dropdown */
+.facility-dropdown {
+    width: 450px;
+    max-height: 500px;
+}
+
+.facilities-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.facilities-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.facilities-list::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 4px;
+}
+
+.facilities-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.facilities-list::-webkit-scrollbar-thumb:hover {
+    background: #8a3d6f;
+}
+
+.search-input {
+    padding: 10px 45px 10px 42px;
+    border: 2px solid #dee2e6;
+    border-radius: 25px;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #8a3d6f;
+    box-shadow: 0 0 0 3px rgba(138, 61, 111, 0.1);
+}
+
+.search-input::placeholder {
+    color: #adb5bd;
+}
+
+.search-icon {
+    left: 14px;
+    z-index: 5;
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.clear-btn {
+    right: 12px;
+    z-index: 5;
+    background: transparent;
+    border: none;
+    color: #dc3545;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #c82333;
+    transform: scale(1.1);
+}
+
+.clear-btn:active {
+    transform: scale(0.95);
+}
+
+/* Facility Items */
+.facility-item {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px 12px;
+    border-radius: 0;
+    border-bottom: 1px solid #f1f3f5 !important;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    text-decoration: none;
+    color: inherit;
+}
+
+.facility-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(138, 61, 111, 0.1) 0%, rgba(138, 61, 111, 0.05) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.facility-item:hover {
+    background-color: #f8f9fa;
+    border-left-color: #8a3d6f;
+    box-shadow: 0 3px 10px rgba(138, 61, 111, 0.15);
+}
+
+.facility-item:hover::before {
+    opacity: 1;
+}
+
+.facility-item .row {
+    position: relative;
+    z-index: 1;
+}
+
+.facility-item .fa-building {
+    transition: all 0.3s ease;
+}
+
+.facility-item:hover .fa-building {
+    transform: scale(1.2);
+    color: #6b2d56;
+}
+
+.facility-item h6 {
+    transition: all 0.3s ease;
+    color: #000000;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.facility-item:hover h6 {
+    color: #8a3d6f !important;
+    font-weight: 700 !important;
+}
+
+.facility-item .badge {
+    transition: all 0.3s ease;
+}
+
+.facility-item:hover .badge {
+    background-color: #8a3d6f !important;
+    color: #ffffff !important;
+    transform: scale(1.1);
+}
+
+/* Content Header */
+.content-header h1 {
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    #sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    #sidebar.expand {
+        width: 100%;
+    }
+
+    .facility-dropdown {
+        width: 100%;
+    }
+}
+
+/* Modal Improvements */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #8a3d6f;
+}
+
+.modal-title {
+    color: #8a3d6f;
+    font-weight: 600;
+}
+
+/* Form Improvements */
+.form-label {
+    font-weight: 500;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #8a3d6f;
+    box-shadow: 0 0 0 0.2rem rgba(138, 61, 111, 0.25);
+}
+
+/* Table Improvements */
+.table thead th {
+    background-color: #f8f9fa;
+    color: #8a3d6f;
+    font-weight: 600;
+    border-bottom: 2px solid #8a3d6f;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(138, 61, 111, 0.05);
+}
+
+/* Alert Improvements */
+.alert {
+    border-left: 4px solid;
+}
+
+.alert-danger {
+    border-left-color: #dc3545;
+}
+
+.alert-success {
+    border-left-color: #28a745;
+}
+
+.alert-warning {
+    border-left-color: #ffc107;
+}
+
+/* Loading State */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Badge */
+.badge {
+    font-weight: 500;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+}

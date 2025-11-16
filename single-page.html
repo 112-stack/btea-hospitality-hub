@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BTEA E-services - Edit Outlet</title>
+
+    <!-- External CSS Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+
+    <!-- Embedded Custom Styles -->
+    <style>
+        /* ===========================
+           BTEA Outlet Management Styles
+           =========================== */
+
+        /* Fonts */
+        @font-face {
+            font-family: 'dinlightregular';
+            src: url('../../content/frontpage/dinlightregular.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'dinmedium';
+            src: url('../../content/frontpage/dinmedium.otf') format('opentype');
+        }
+
+        /* Base Styles */
+        body {
+            font-family: dinlightregular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 81px;
+        }
+
+        h1, h2, h4, h5, .alert, th {
+            font-family: dinmedium, sans-serif;
+        }
+
+        h1 {
+            color: #8a3d6f;
+        }
+
+        /* Remove number input spinners */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Navigation */
+        nav {
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+            padding-right: 20px;
+        }
+
+        /* Buttons */
+        .btn-btea-primary {
+            color: #FFF;
+            background-color: #815374;
+            border-color: #6d4460;
+        }
+
+        .btn-btea-primary:hover {
+            color: #FFF;
+            background-color: #6d4460;
+            border-color: #59314c;
+        }
+
+        .btn-btea-outline-primary {
+            color: #815374;
+            background-color: transparent;
+            border: 1px solid #815374;
+        }
+
+        .btn-btea-outline-primary:hover {
+            color: #FFF;
+            background-color: #815374;
+            border-color: #6d4460;
+        }
+
+        .text-btea {
+            color: #815374 !important;
+        }
+
+        /* Cards */
+        .card {
+            --bs-card-spacer-y: 2rem;
+            --bs-card-spacer-x: 2.5rem;
+            --bs-card-cap-padding-x: 2.5rem;
+        }
+
+        .card-header {
+            background-color: white;
+            color: black;
+            border-bottom: 0;
+        }
+
+        /* Wrapper Layout */
+        .wrapper {
+            display: flex;
+            min-height: calc(100vh - 81px);
+            overflow: hidden;
+        }
+
+        .main {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            transition: all 0.35s ease-in-out;
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: 70px;
+            min-width: 70px;
+            height: calc(100vh - 81px);
+            overflow-y: auto;
+            background-color: white;
+            transition: all 0.3s ease;
+            position: sticky;
+            top: 81px;
+        }
+
+        #sidebar.expand {
+            width: 260px;
+            min-width: 260px;
+        }
+
+        #sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        #sidebar {
+            scrollbar-width: none;
+        }
+
+        #sidebar:not(.expand) .sidebar-logo,
+        #sidebar:not(.expand) a.sidebar-link span {
+            display: none;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-logo a {
+            color: black;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .toggle-btn {
+            background-color: transparent;
+            cursor: pointer;
+            border: 0;
+            padding: 1rem;
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toggle-btn i {
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+            flex: 1 1 auto;
+            list-style-type: none;
+        }
+
+        .sidebar-item {
+            position: relative;
+            padding: 5px 10px 5px 1px;
+        }
+
+        #sidebar.expand .sidebar-item {
+            padding-top: 5px;
+        }
+
+        a.sidebar-link {
+            padding: .625rem 1.625rem;
+            color: black;
+            display: block;
+            font-size: 1rem;
+            white-space: nowrap;
+            border-left: 3px solid transparent;
+            text-decoration: none;
+        }
+
+        .sidebar-link i {
+            font-size: 1.1rem;
+            margin-right: 0.6rem;
+        }
+
+        a.sidebar-link:hover {
+            background-color: rgba(129, 83, 116, 0.075);
+            border-left: 3px solid #815374;
+        }
+
+        #sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+            transform: rotate(45deg);
+            transition: all .2s ease-out;
+            border: solid;
+            border-width: 0 .075rem .075rem 0;
+            content: "";
+            display: inline-block;
+            padding: 2px;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.4rem;
+            transform: rotate(-135deg);
+        }
+
+        /* Facility Dropdown */
+        .facility-dropdown {
+            width: 450px;
+            max-height: 500px;
+        }
+
+        .facilities-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .facilities-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .facilities-list::-webkit-scrollbar-track {
+            background: #f7fafc;
+            border-radius: 4px;
+        }
+
+        .facilities-list::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .facilities-list::-webkit-scrollbar-thumb:hover {
+            background: #8a3d6f;
+        }
+
+        .search-input {
+            padding: 10px 45px 10px 42px;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8a3d6f;
+            box-shadow: 0 0 0 3px rgba(138, 61, 111, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #adb5bd;
+        }
+
+        .search-icon {
+            left: 14px;
+            z-index: 5;
+            color: #6c757d;
+            pointer-events: none;
+        }
+
+        .clear-btn {
+            right: 12px;
+            z-index: 5;
+            background: transparent;
+            border: none;
+            color: #dc3545;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .clear-btn:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #c82333;
+            transform: scale(1.1);
+        }
+
+        .clear-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Facility Items */
+        .facility-item {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 12px;
+            border-radius: 0;
+            border-bottom: 1px solid #f1f3f5 !important;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .facility-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(138, 61, 111, 0.1) 0%, rgba(138, 61, 111, 0.05) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .facility-item:hover {
+            background-color: #f8f9fa;
+            border-left-color: #8a3d6f;
+            box-shadow: 0 3px 10px rgba(138, 61, 111, 0.15);
+        }
+
+        .facility-item:hover::before {
+            opacity: 1;
+        }
+
+        .facility-item .row {
+            position: relative;
+            z-index: 1;
+        }
+
+        .facility-item .fa-building {
+            transition: all 0.3s ease;
+        }
+
+        .facility-item:hover .fa-building {
+            transform: scale(1.2);
+            color: #6b2d56;
+        }
+
+        .facility-item h6 {
+            transition: all 0.3s ease;
+            color: #000000;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .facility-item:hover h6 {
+            color: #8a3d6f !important;
+            font-weight: 700 !important;
+        }
+
+        .facility-item .badge {
+            transition: all 0.3s ease;
+        }
+
+        .facility-item:hover .badge {
+            background-color: #8a3d6f !important;
+            color: #ffffff !important;
+            transform: scale(1.1);
+        }
+
+        /* Content Header */
+        .content-header h1 {
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .wrapper {
+                flex-direction: column;
+            }
+
+            #sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            #sidebar.expand {
+                width: 100%;
+            }
+
+            .facility-dropdown {
+                width: 100%;
+            }
+        }
+
+        /* Modal Improvements */
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #8a3d6f;
+        }
+
+        .modal-title {
+            color: #8a3d6f;
+            font-weight: 600;
+        }
+
+        /* Form Improvements */
+        .form-label {
+            font-weight: 500;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #8a3d6f;
+            box-shadow: 0 0 0 0.2rem rgba(138, 61, 111, 0.25);
+        }
+
+        /* Table Improvements */
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #8a3d6f;
+            font-weight: 600;
+            border-bottom: 2px solid #8a3d6f;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(138, 61, 111, 0.05);
+        }
+
+        /* Alert Improvements */
+        .alert {
+            border-left: 4px solid;
+        }
+
+        .alert-danger {
+            border-left-color: #dc3545;
+        }
+
+        .alert-success {
+            border-left-color: #28a745;
+        }
+
+        .alert-warning {
+            border-left-color: #ffc107;
+        }
+
+        /* Loading State */
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Badge */
+        .badge {
+            font-weight: 500;
+        }
+
+        .bg-warning {
+            background-color: #ffc107 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar bg-white fixed-top shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand">
+                <img alt="BTEA Logo" src="/Content/images/btea-logo-tr-002.png" height="55" width="220">
+            </a>
+
+            <div class="d-flex align-items-center gap-3">
+                <!-- Facility Selector -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary d-flex gap-2 justify-content-between align-items-center"
+                            type="button" data-bs-toggle="dropdown" style="width: 450px;">
+                        <h6 class="mb-0">
+                            <strong>test hotel 232</strong>
+                            <small class="text-muted">(1120-1)</small>
+                        </h6>
+                        <span>Owner <i class="fa-solid fa-caret-down"></i></span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end facility-dropdown">
+                        <!-- Search Box -->
+                        <li class="px-3 py-2 sticky-top bg-white border-bottom">
+                            <div class="position-relative">
+                                <i class="fa-solid fa-search position-absolute search-icon"></i>
+                                <input type="text" class="form-control search-input"
+                                       id="facilitySearchInput" placeholder="Search facility, CR, or type...">
+                                <button class="btn clear-btn position-absolute" id="clearSearchBtn" style="display: none;">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted d-block mt-2" id="searchResultCount"></small>
+                        </li>
+
+                        <!-- Facilities List -->
+                        <li class="facilities-list" id="facilitiesList">
+                            <!-- Facility items will be loaded here -->
+                        </li>
+
+                        <li class="text-center py-4" id="noResultsMsg" style="display: none;">
+                            <i class="fa-solid fa-search opacity-25" style="font-size: 2.5em;"></i>
+                            <p class="mb-0 mt-3">No facilities found</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Dashboard Link -->
+                <a href="/Login/Dashboard" class="text-primary" title="Dashboard">
+                    <img src="/Content/download.svg" alt="Dashboard">
+                </a>
+
+                <!-- User Menu -->
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-circle-user fa-lg"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="text-center"><strong>ABF</strong></li>
+                        <li><a class="dropdown-item" href="/MyProfile">My Profile</a></li>
+                        <li><a class="dropdown-item" href="/Login/signout">Sign Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="expand">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="fa-solid fa-bars fa-lg"></i>
+                </button>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="/Main" class="sidebar-link">
+                        <i class="fa-solid fa-house fa-lg"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/Profile/ShowProfile" class="sidebar-link">
+                        <i class="fa-solid fa-address-card fa-lg"></i>
+                        <span>Full Profile</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/Main/AllPayments" class="sidebar-link">
+                        <i class="fa-solid fa-money-check-dollar fa-lg"></i>
+                        <span>Previous Payments</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item ps-3 fw-bold groupItem"><br>Licensing</li>
+
+                <li class="sidebar-item">
+                    <a href="/ArtistBand" class="sidebar-link">
+                        <i class="fa-solid fa-music fa-lg"></i>
+                        <span>Artist Permission</span>
+                        <span class="badge bg-warning ms-2">New</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/Closing/viewRequests" class="sidebar-link">
+                        <i class="fa-solid fa-lock fa-lg"></i>
+                        <span>Close/Reopen Property</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/ReviveProperty" class="sidebar-link">
+                        <i class="fa-solid fa-refresh fa-lg"></i>
+                        <span>Revive Property</span>
+                        <span class="badge bg-warning ms-2">New</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/EditLicense" class="sidebar-link">
+                        <i class="fa-solid fa-pen fa-lg"></i>
+                        <span>Edit License</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/EditOutlet/ViewRequests" class="sidebar-link">
+                        <i class="fa-solid fa-clock-rotate-left fa-lg"></i>
+                        <span>Edit Outlet</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/ExptPart" class="sidebar-link">
+                        <i class="fa fa-globe fa-lg"></i>
+                        <span>Exhibition Participation</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/RegularUpdate/ViewUpdates" class="sidebar-link">
+                        <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                        <span>Property Update</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main p-4">
+            <div class="content-header">
+                <h1>Edit Outlet</h1>
+                <hr>
+            </div>
+
+            <div id="outlet_form">
+                <form action="/EditOutlet/doUpdate" method="post" enctype="multipart/form-data" id="outletUpdateForm">
+                    <input type="hidden" name="draftId" value="20033985-e671-f011-b4cc-000d3ab8e275">
+                    <input type="hidden" name="outletRequestId" value="0a66facd-e671-f011-b4cb-6045bddda5c1">
+                    <input type="hidden" name="preSelectOutletType" value="0">
+
+                    <!-- Processing Outlets Table -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h4>Processing Outlets</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="tblProcessingOutlets" class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Outlet Name (EN)</th>
+                                            <th>Outlet Name (AR)</th>
+                                            <th>Status</th>
+                                            <th>Type</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(outlet, index) in src.processingOutlets"
+                                            :key="index"
+                                            v-if="outlet.db_status != 2">
+                                            <td>{{ outlet.name }}</td>
+                                            <td>{{ outlet.arabic_name }}</td>
+                                            <td>{{ outlet.status }}</td>
+                                            <td>{{ outlet.typestr }}</td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-secondary me-1"
+                                                        @click="openEditForm(outlet, index)"
+                                                        title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-danger"
+                                                        @click="deleteOutlet(outlet, index)"
+                                                        title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-primary" @click="createNewOutlet" data-bs-toggle="modal" data-bs-target="#addNewOutletModal">
+                                    <i class="fa fa-plus"></i> Add New Outlet
+                                </button>
+                                <button type="button" class="btn btn-secondary ms-2" @click="openEditOutletModal" data-bs-toggle="modal" data-bs-target="#existingOutletsModal">
+                                    <i class="fa fa-edit"></i> Edit Existing Outlet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Validation Errors -->
+                    <div v-if="outletErrors.length > 0 && !src.isExceptional" class="alert alert-danger">
+                        <h5>Validation Errors:</h5>
+                        <ul class="mb-0">
+                            <li v-for="error in outletErrors" :key="error">{{ error }}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button id="submission_button"
+                                type="submit"
+                                class="btn btn-primary btn-lg"
+                                :disabled="isSubmitButtonDisabled">
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Reference Link -->
+            <div class="mt-4">
+                <a href="/Content/docs/Hotels Classification Decree.pdf" target="_blank">
+                    <i class="fa fa-file-pdf"></i> Hotels Classification Decree (Resolution No. 4/2015)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add New Outlet Modal -->
+    <div class="modal fade" id="addNewOutletModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Outlet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Outlet Form Fields -->
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Name (English)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="newOutlet.name" placeholder="Outlet Name (English)">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Name (Arabic)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="newOutlet.arabic_name" placeholder="Outlet Name (Arabic)">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Type</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" v-model="newOutlet.type" @change="toggle_ramadanTentAttachments">
+                                <option value="">Select Type</option>
+                                <option v-for="type in src.outletTypes" :value="type.Key" :key="type.Key">
+                                    {{ type.Value }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Location</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="newOutlet.location" placeholder="Floor Number">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Capacity</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" v-model="newOutlet.capacity" placeholder="Maximum capacity">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label text-sm-end">Serving Hookah?</label>
+                        <div class="col-sm-9">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" v-model="newOutlet.isServingHookah" :value="true" id="hookah_yes">
+                                <label class="form-check-label" for="hookah_yes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" v-model="newOutlet.isServingHookah" :value="false" id="hookah_no">
+                                <label class="form-check-label" for="hookah_no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- POS Section -->
+                    <div class="card mb-3">
+                        <div class="card-header">POS Information</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">POS Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.pos_name" placeholder="POS Name">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">PMS ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.pms_id" placeholder="PMS ID">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">POS Integrated</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" v-model="newOutlet.pos_integrated" id="pos_integrated">
+                                        <label class="form-check-label" for="pos_integrated">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Management Section -->
+                    <div class="card mb-3">
+                        <div class="card-header">Management Information</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Management Type</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" v-model="newOutlet.management_type" @change="toggle_outletManagementType">
+                                        <option :value="449930000">Self Operated</option>
+                                        <option :value="449930001">Outsourced</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.manager_name" placeholder="Manager Name">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager CPR</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.manager_cpr" placeholder="Manager CPR">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="tel" class="form-control" v-model="newOutlet.manager_phone" placeholder="Manager Phone">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Manager Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" v-model="newOutlet.manager_email" placeholder="Manager Email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ramadan Tent Fields (conditional) -->
+                    <div class="card mb-3" id="cardRamadanFields" v-show="newOutlet.type == 449930017">
+                        <div class="card-header">Ramadan Tent Information</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Location (Arabic)</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.ramadan_tent_loc_ar" placeholder="Location Description (Arabic)">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label text-sm-end">Location (English)</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" v-model="newOutlet.ramadan_tent_loc_en" placeholder="Location Description (English)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" @click="addNewOutletToArray(isOpenForEdit ? 'edit' : 'add')">
+                        {{ isOpenForEdit ? 'Update' : 'Add' }} Outlet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Embedded Custom Scripts -->
+    <script>
+        /**
+         * BTEA Outlet Management Application
+         * Vue.js Application for managing outlets
+         */
+
+        const OUTLET_TYPES = {
+            RESTAURANT_SPECIALTY: 449930000,
+            LOUNGE: 449930001,
+            MAIN_RESTAURANT: 449930002,
+            CLUB_LOUNGE: 449930003,
+            CAFE: 449930013,
+            FINE_DINING: 449930016,
+            RAMADAN_TENT: 449930017,
+            SPA: 449930028
+        };
+
+        const MANAGEMENT_TYPES = {
+            SELF_OPERATED: 449930000,
+            OUTSOURCED: 449930001
+        };
+
+        const DB_STATUS = {
+            UPDATE: 0,
+            ADD: 1,
+            DELETE: 2,
+            NO_CHANGE: 3
+        };
+
+        // Vue Application
+        var vue = new Vue({
+            el: '#outlet_form',
+
+            data() {
+                return {
+                    src: window.outletData || {
+                        outlets: [],
+                        outletTypes: [],
+                        managementTypes: [],
+                        offices: [],
+                        isBoutique: false,
+                        isExceptional: false,
+                        isApartmentHotel: false,
+                        stars: 0,
+                        rooms: 0,
+                        processingOutlets: [],
+                        inProcessOutlets: [],
+                        rInfo: {}
+                    },
+
+                    newOutlet: {},
+                    selectedOutlet: {},
+                    outletErrors: [],
+
+                    // UI State Flags
+                    showOutlets: true,
+                    showOptions: false,
+                    showEditForm: false,
+                    isOpenForEdit: false,
+
+                    // Service Selection Flags
+                    isChangNameSelected: false,
+                    isOpenOutletSelected: false,
+                    isCloseOutletSelected: false,
+                    isChangeLocSelected: false,
+                    isChangeTypeSelected: false,
+                    isChangeHookahServiceSelected: false,
+                    isDeleteOutletSelected: false,
+
+                    // Validation Flags
+                    isSelect_without_deleteOutlet: false,
+                    isDeleteOutlet: false,
+                    isFacility: false,
+
+                    // Leasing Office
+                    leased_office_name: '',
+                    leased_office_Id: '',
+                    leased_office_API_message: '',
+
+                    // Index for updates
+                    indexForUpdate: 0
+                };
+            },
+
+            computed: {
+                isSubmitButtonDisabled() {
+                    if (this.preSelectOutletType == OUTLET_TYPES.RAMADAN_TENT) {
+                        return false;
+                    }
+                    return this.outletErrors.length > 0 && !this.src.isExceptional;
+                }
+            },
+
+            methods: {
+                /**
+                 * Create new outlet
+                 */
+                createNewOutlet() {
+                    this.resetLeasingOffice();
+                    this.isOpenForEdit = false;
+                    this.newOutlet = {
+                        status: "New",
+                        management_type: MANAGEMENT_TYPES.SELF_OPERATED,
+                        pos_integrated: false,
+                        isServingHookah: false
+                    };
+
+                    if (this.src.rInfo.start_date && this.src.rInfo.end_date) {
+                        this.newOutlet.ramadan_tent_from = moment(this.src.rInfo.start_date).format('YYYY-MM-DD');
+                        this.newOutlet.ramadan_tent_to = moment(this.src.rInfo.end_date).format('YYYY-MM-DD');
+                    }
+
+                    this.clearAttachments();
+                },
+
+                /**
+                 * Add new outlet to processing array
+                 */
+                addNewOutletToArray(mode) {
+                    if (!this.validateNewOutlet()) {
+                        return;
+                    }
+
+                    const index = mode === "add" ? this.src.processingOutlets.length : this.indexForUpdate;
+
+                    // Handle outsourced management
+                    if (this.newOutlet.management_type == MANAGEMENT_TYPES.OUTSOURCED) {
+                        if (!this.validateOutsourced(index)) {
+                            return;
+                        }
+                    }
+
+                    // Handle Ramadan Tent
+                    if (this.newOutlet.type == OUTLET_TYPES.RAMADAN_TENT) {
+                        if (!this.validateRamadanTent(index)) {
+                            return;
+                        }
+                    }
+
+                    // Add or update
+                    if (mode === "add") {
+                        this.newOutlet.db_status = DB_STATUS.ADD;
+                        this.src.processingOutlets.push(this.newOutlet);
+                    } else {
+                        if (this.newOutlet.db_status == DB_STATUS.NO_CHANGE) {
+                            this.newOutlet.db_status = DB_STATUS.UPDATE;
+                        }
+                        this.src.processingOutlets[this.indexForUpdate] = Object.assign({}, this.newOutlet);
+                    }
+
+                    $('#addNewOutletModal').modal('hide');
+                    this.validateOutlets();
+                },
+
+                /**
+                 * Validate new outlet form
+                 */
+                validateNewOutlet() {
+                    const required = [
+                        { field: 'name', message: 'Outlet English Name' },
+                        { field: 'arabic_name', message: 'Outlet Arabic Name' },
+                        { field: 'type', message: 'Outlet Type' },
+                        { field: 'location', message: 'Outlet Location' },
+                        { field: 'capacity', message: 'Outlet Capacity' },
+                        { field: 'pms_id', message: 'Outlet PMS ID' },
+                        { field: 'management_type', message: 'Management Type' },
+                        { field: 'manager_name', message: 'Manager Name' },
+                        { field: 'manager_cpr', message: 'Manager CPR' },
+                        { field: 'manager_phone', message: 'Manager Phone' },
+                        { field: 'manager_email', message: 'Manager Email' }
+                    ];
+
+                    for (let item of required) {
+                        if (!this.newOutlet[item.field]) {
+                            alert(`${item.message} is required`);
+                            return false;
+                        }
+                    }
+
+                    if (this.newOutlet.is_pos_exist && !this.newOutlet.pos_name) {
+                        alert('POS Name is required when POS exists');
+                        return false;
+                    }
+
+                    return true;
+                },
+
+                /**
+                 * Validate outsourced management
+                 */
+                validateOutsourced(index) {
+                    const fields = ['leased_from', 'leasing_office_cr', 'leased_to'];
+                    const messages = {
+                        leased_from: 'Leasing From Date',
+                        leasing_office_cr: 'Leasing Office (CR)',
+                        leased_to: 'Leasing To Date'
+                    };
+
+                    for (let field of fields) {
+                        const value = field === 'leased_from' || field === 'leased_to'
+                            ? $(`#outlet_${field.replace('leased_', '')}`).val()
+                            : field === 'leasing_office_cr'
+                            ? $('#leasing_office_cr').val()
+                            : null;
+
+                        if (!value) {
+                            alert(`${messages[field]} is required`);
+                            return false;
+                        }
+
+                        if (field === 'leased_from') {
+                            this.newOutlet.leased_from = value;
+                        } else if (field === 'leased_to') {
+                            this.newOutlet.leased_to = value;
+                        } else if (field === 'leasing_office_cr') {
+                            this.newOutlet.leasing_office_cr = value;
+                        }
+                    }
+
+                    if (!this.leased_office_Id) {
+                        alert('Leasing Office is required');
+                        return false;
+                    }
+                    this.newOutlet.officeId = this.leased_office_Id;
+
+                    // Handle attachment
+                    if (!$('#att_leasing').val()) {
+                        alert('Leasing Attachment is required');
+                        return false;
+                    }
+
+                    this.cloneFileInput('att_leasing', index);
+                    return true;
+                },
+
+                /**
+                 * Validate Ramadan Tent
+                 */
+                validateRamadanTent(index) {
+                    const status = this.newOutlet.app_status;
+
+                    if (status == 449930005 || status == 449930008) {
+                        // Upload documents required
+                        const attachments = ['att_1', 'att_2', 'att_3', 'att_4'];
+                        for (let att of attachments) {
+                            if (!$(`#${att}`).val()) {
+                                const names = {
+                                    att_1: 'Civil Defence approval',
+                                    att_2: 'Ministry of Health approval',
+                                    att_3: 'Posture Attachment',
+                                    att_4: 'Ministry of Municipalities approval'
+                                };
+                                alert(`${names[att]} is required`);
+                                return false;
+                            }
+                            this.cloneFileInput(att, index);
+                        }
+                    } else {
+                        // Location fields required
+                        if (!$('#ramadan_tent_loc_en').val()) {
+                            alert('Ramadan Tent Location (English) is required');
+                            return false;
+                        }
+                        if (!$('#ramadan_tent_loc_ar').val()) {
+                            alert('Ramadan Tent Location (Arabic) is required');
+                            return false;
+                        }
+
+                        // Validate duration (max 90 days)
+                        const from = new Date($('#ramadan_tent_from').val()).getTime();
+                        const to = new Date($('#ramadan_tent_to').val()).getTime();
+                        const days = Math.ceil((to - from) / (1000 * 3600 * 24));
+
+                        if (days > 90) {
+                            alert('Ramadan Tent duration cannot exceed 90 days');
+                            return false;
+                        }
+                    }
+
+                    return true;
+                },
+
+                /**
+                 * Clone file input for form submission
+                 */
+                cloneFileInput(inputId, index) {
+                    const fileInput = $(`#${inputId}`);
+                    const cloneInput = fileInput.clone();
+                    const newId = `outlet_${index}_${inputId}`;
+
+                    cloneInput.attr({
+                        id: newId,
+                        name: newId,
+                        hidden: true
+                    });
+
+                    cloneInput.insertAfter('#tst');
+                    this.newOutlet[inputId] = newId;
+                },
+
+                /**
+                 * Open edit form for existing outlet
+                 */
+                openEditForm(outlet, index) {
+                    this.resetLeasingOffice();
+
+                    if (outlet.status === "New") {
+                        this.newOutlet = Object.assign({}, outlet);
+                        this.leased_office_name = outlet.officeName;
+                        this.leased_office_Id = outlet.officeId;
+                        this.newOutlet.leasing_office_cr = outlet.officeCR;
+                        $('#addNewOutletModal').modal('show');
+                    } else if (outlet.status === "Edit") {
+                        this.selectedOutlet = Object.assign({}, outlet);
+                        this.showOptions = false;
+                        this.showOutlets = false;
+                        this.showEditForm = true;
+
+                        // Set flags
+                        this.isChangNameSelected = outlet.isChangNameSelected;
+                        this.isChangeTypeSelected = outlet.isChangeTypeSelected;
+                        this.isChangeLocSelected = outlet.isChangeLocSelected;
+                        this.isCloseOutletSelected = outlet.isCloseOutletSelected;
+                        this.isOpenOutletSelected = outlet.isOpenOutletSelected;
+                        this.isChangeHookahServiceSelected = outlet.isChangeHookahServiceSelected;
+
+                        $('#existingOutletsModal').modal('show');
+                    }
+
+                    this.isOpenForEdit = true;
+                    this.indexForUpdate = index;
+                },
+
+                /**
+                 * Delete outlet
+                 */
+                deleteOutlet(outlet, index) {
+                    if (outlet.db_status === DB_STATUS.ADD) {
+                        this.src.processingOutlets.splice(index, 1);
+                    } else {
+                        outlet.db_status = DB_STATUS.DELETE;
+                    }
+                    this.validateOutlets();
+                },
+
+                /**
+                 * Validate outlets against criteria
+                 */
+                validateOutlets() {
+                    this.outletErrors = [];
+
+                    const counts = this.calculateOutletCounts();
+
+                    if (this.src.isBoutique) {
+                        this.validateBoutiqueHotel(counts);
+                    } else if (this.src.isApartmentHotel) {
+                        this.validateApartmentHotel(counts);
+                    } else {
+                        this.validateRegularHotel(counts);
+                    }
+                },
+
+                /**
+                 * Calculate outlet counts
+                 */
+                calculateOutletCounts() {
+                    const types = [
+                        OUTLET_TYPES.MAIN_RESTAURANT,
+                        OUTLET_TYPES.CAFE,
+                        OUTLET_TYPES.RESTAURANT_SPECIALTY,
+                        OUTLET_TYPES.LOUNGE,
+                        OUTLET_TYPES.CLUB_LOUNGE,
+                        OUTLET_TYPES.FINE_DINING
+                    ];
+
+                    const counts = {};
+
+                    for (let type of types) {
+                        const existing = this.src.outlets.filter(o => o.type === type).length;
+                        const form = this.src.processingOutlets.filter(
+                            o => o.type === type &&
+                            (o.isChangeTypeSelected || o.status === "New") &&
+                            o.db_status !== DB_STATUS.DELETE
+                        ).length;
+                        const deleted = this.src.processingOutlets.filter(
+                            o => o.type === type && o.db_status === DB_STATUS.DELETE
+                        ).length;
+
+                        counts[type] = existing + form - deleted;
+                    }
+
+                    return counts;
+                },
+
+                /**
+                 * Validate boutique hotel
+                 */
+                validateBoutiqueHotel(counts) {
+                    if (counts[OUTLET_TYPES.FINE_DINING] !== 1) {
+                        this.outletErrors.push(`Exactly 1 fine dining required, current: ${counts[OUTLET_TYPES.FINE_DINING]}`);
+                    }
+
+                    const sumCafes = counts[OUTLET_TYPES.MAIN_RESTAURANT] + counts[OUTLET_TYPES.CAFE];
+                    if (sumCafes !== 1) {
+                        this.outletErrors.push(`Exactly 1 all-day dining OR cafe required, current: ${sumCafes}`);
+                    }
+
+                    if (counts[OUTLET_TYPES.RESTAURANT_SPECIALTY] !== 1) {
+                        this.outletErrors.push(`Exactly 1 specialty restaurant required, current: ${counts[OUTLET_TYPES.RESTAURANT_SPECIALTY]}`);
+                    }
+                },
+
+                /**
+                 * Validate apartment hotel
+                 */
+                validateApartmentHotel(counts) {
+                    if (counts[OUTLET_TYPES.MAIN_RESTAURANT] < 1) {
+                        this.outletErrors.push(`Minimum 1 all-day dining required, current: ${counts[OUTLET_TYPES.MAIN_RESTAURANT]}`);
+                    }
+
+                    if (counts[OUTLET_TYPES.CLUB_LOUNGE] > 0 || counts[OUTLET_TYPES.LOUNGE] > 0) {
+                        this.outletErrors.push('Lounges are not allowed in apartment hotels');
+                    }
+
+                    if (this.src.stars === 449930003 && counts[OUTLET_TYPES.CAFE] > 1) {
+                        this.outletErrors.push(`Maximum 1 cafe for 4-star, current: ${counts[OUTLET_TYPES.CAFE]}`);
+                    }
+
+                    if (this.src.stars === 449930004 && counts[OUTLET_TYPES.CAFE] < 1) {
+                        this.outletErrors.push(`Minimum 1 cafe for 5-star, current: ${counts[OUTLET_TYPES.CAFE]}`);
+                    }
+                },
+
+                /**
+                 * Validate regular hotel
+                 */
+                validateRegularHotel(counts) {
+                    const stars = this.src.stars;
+
+                    // All ratings need at least 1 all-day dining
+                    if (counts[OUTLET_TYPES.MAIN_RESTAURANT] < 1) {
+                        this.outletErrors.push(`Minimum 1 all-day dining required, current: ${counts[OUTLET_TYPES.MAIN_RESTAURANT]}`);
+                    }
+
+                    if (stars <= 3) {
+                        if (counts[OUTLET_TYPES.CAFE] < 1) {
+                            this.outletErrors.push(`Exactly 1 cafe required, current: ${counts[OUTLET_TYPES.CAFE]}`);
+                        }
+                    } else if (stars === 4 || stars === 5) {
+                        if (counts[OUTLET_TYPES.CAFE] < 1) {
+                            this.outletErrors.push(`Minimum 1 cafe required, current: ${counts[OUTLET_TYPES.CAFE]}`);
+                        }
+
+                        if (counts[OUTLET_TYPES.RESTAURANT_SPECIALTY] < 2) {
+                            this.outletErrors.push(`Minimum 2 specialty restaurants required, current: ${counts[OUTLET_TYPES.RESTAURANT_SPECIALTY]}`);
+                        }
+
+                        // Lounge calculations
+                        const roomsPerLounge = stars === 4 ? 80 : 100;
+                        const maxLounges = Math.floor(this.src.rooms / roomsPerLounge);
+
+                        if (counts[OUTLET_TYPES.CLUB_LOUNGE] > maxLounges) {
+                            this.outletErrors.push(`Maximum ${maxLounges} club lounges allowed (1 per ${roomsPerLounge} rooms), current: ${counts[OUTLET_TYPES.CLUB_LOUNGE]}`);
+                        }
+
+                        if (counts[OUTLET_TYPES.LOUNGE] > maxLounges) {
+                            this.outletErrors.push(`Maximum ${maxLounges} lounges allowed (1 per ${roomsPerLounge} rooms), current: ${counts[OUTLET_TYPES.LOUNGE]}`);
+                        }
+                    }
+                },
+
+                /**
+                 * Get leasing office by CR
+                 */
+                async getLeasingOfficeByCR() {
+                    this.resetLeasingOffice();
+
+                    const cr = $('#leasing_office_cr').val();
+                    if (!cr) return;
+
+                    const url = `/api/EditOutletA/getOfficeByCR?cr=${cr}`;
+
+                    try {
+                        const response = await fetch(url);
+                        const data = await response.json();
+
+                        if (data.message === "OK") {
+                            this.leased_office_name = data.Office_name;
+                            this.leased_office_Id = data.Office_Id;
+                        }
+                        this.leased_office_API_message = data.message;
+                    } catch (error) {
+                        console.error('Error fetching office:', error);
+                        this.leased_office_API_message = 'Error fetching office';
+                    }
+                },
+
+                /**
+                 * Reset leasing office
+                 */
+                resetLeasingOffice() {
+                    this.leased_office_name = '';
+                    this.leased_office_Id = '';
+                    this.leased_office_API_message = '';
+                },
+
+                /**
+                 * Clear attachments
+                 */
+                clearAttachments() {
+                    $('#att_leasing, #att_1, #att_2, #att_3, #att_4').val('');
+                },
+
+                /**
+                 * Toggle Ramadan Tent fields
+                 */
+                toggle_ramadanTentAttachments() {
+                    const typeObj = this.src.outletTypes.find(t => t.Key == this.newOutlet.type);
+                    if (typeObj) {
+                        this.newOutlet.typestr = typeObj.Value;
+                    }
+                },
+
+                /**
+                 * Toggle management type
+                 */
+                toggle_outletManagementType() {
+                    // Handled by CSS visibility
+                }
+            },
+
+            beforeMount() {
+                this.validateOutlets();
+            }
+        });
+
+        // Helper functions
+        function toggle_outletManagementType(element) {
+            const value = $(element).val();
+            if (value == MANAGEMENT_TYPES.OUTSOURCED) {
+                $('.cardLeasing').show();
+            } else {
+                $('.cardLeasing').hide();
+            }
+        }
+
+        function toggle_ramadanTentAttachments(element) {
+            const value = $(element).val();
+            if (value == OUTLET_TYPES.RAMADAN_TENT) {
+                $('#cardRamadanFields').show();
+            } else {
+                $('#cardRamadanFields').hide();
+            }
+
+            vue.toggle_ramadanTentAttachments();
+        }
+
+        // Form validation
+        function masterValidate() {
+            if (vue.src.processingOutlets.length === 0) {
+                alert('At least one outlet is required to submit');
+                return false;
+            }
+
+            // Check for missing Ramadan Tent attachments
+            const missingAttachments = vue.src.processingOutlets.some(outlet => {
+                if (outlet.type == OUTLET_TYPES.RAMADAN_TENT &&
+                    (outlet.app_status == 449930005 || outlet.app_status == 449930008)) {
+                    return !outlet.att_1 || !outlet.att_2 || !outlet.att_3 || !outlet.att_4;
+                }
+                return false;
+            });
+
+            if (missingAttachments) {
+                alert('Please upload all required Ramadan Tent documents');
+                return false;
+            }
+
+            $('#submission_button').text('Submitting...').prop('disabled', true);
+            return true;
+        }
+
+        // File validation
+        function validateAttachments() {
+            const validExt = '.pdf';
+            const maxSize = 10 * 1024 * 1024; // 10MB
+
+            let isValid = true;
+
+            $('input[type="file"]').each(function() {
+                if (this.files[0]) {
+                    const file = this.files[0];
+                    const fileName = file.name.toLowerCase();
+
+                    // Check size
+                    if (file.size > maxSize) {
+                        alert('File size must be less than 10MB');
+                        isValid = false;
+                        return false;
+                    }
+
+                    // Check extension
+                    if (!fileName.endsWith(validExt)) {
+                        alert(`File must be ${validExt} format`);
+                        isValid = false;
+                        return false;
+                    }
+                }
+            });
+
+            $('#submission_button, #updateChangesButton').prop('disabled', !isValid);
+        }
+    </script>
+
+    <!-- Sidebar Toggle Script -->
+    <script>
+        /**
+         * Sidebar Toggle Functionality
+         */
+
+        $(document).ready(function() {
+            const hamBurger = document.querySelector(".toggle-btn");
+
+            if (hamBurger) {
+                hamBurger.addEventListener("click", function() {
+                    // Toggle group items visibility
+                    const groupItems = document.querySelectorAll(".groupItem");
+                    groupItems.forEach(item => {
+                        item.style.display = item.style.display === 'none' ? '' : 'none';
+                    });
+
+                    // Toggle sidebar expansion
+                    document.querySelector("#sidebar").classList.toggle("expand");
+                });
+            }
+
+            // Initialize Bootstrap tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+
+    <!-- Facility Search Script -->
+    <script>
+        /**
+         * Facility Search Functionality
+         */
+
+        $(document).ready(function() {
+            const searchInput = $('#facilitySearchInput');
+            const clearBtn = $('#clearSearchBtn');
+            const facilitiesList = $('#facilitiesList');
+            const noResultsMsg = $('#noResultsMsg');
+            const searchResultCount = $('#searchResultCount');
+            const facilityItems = $('.facility-item');
+
+            /**
+             * Search facilities
+             */
+            searchInput.on('input', function() {
+                const searchTerm = $(this).val().toLowerCase().trim();
+
+                // Show/hide clear button
+                clearBtn.toggle(searchTerm.length > 0);
+
+                let visibleCount = 0;
+
+                // Filter facilities
+                facilityItems.each(function() {
+                    const searchText = $(this).data('search-text') || '';
+                    const isMatch = searchText.toLowerCase().includes(searchTerm);
+
+                    $(this).toggle(isMatch);
+                    if (isMatch) visibleCount++;
+                });
+
+                // Update result count
+                if (searchTerm.length > 0) {
+                    searchResultCount.text(`Found ${visibleCount} result(s)`);
+                } else {
+                    searchResultCount.text('');
+                }
+
+                // Show/hide no results message
+                if (visibleCount === 0 && searchTerm.length > 0) {
+                    facilitiesList.hide();
+                    noResultsMsg.show();
+                } else {
+                    facilitiesList.show();
+                    noResultsMsg.hide();
+                }
+            });
+
+            /**
+             * Clear search
+             */
+            clearBtn.on('click', function(e) {
+                e.stopPropagation();
+                searchInput.val('').trigger('input').focus();
+            });
+
+            /**
+             * Focus search when dropdown opens
+             */
+            $('.dropdown-toggle').on('shown.bs.dropdown', function() {
+                setTimeout(() => searchInput.focus(), 100);
+            });
+
+            /**
+             * Clear search when dropdown closes
+             */
+            $('.dropdown-menu').on('hidden.bs.dropdown', function() {
+                searchInput.val('').trigger('input');
+            });
+
+            /**
+             * Prevent dropdown close on search input click
+             */
+            searchInput.on('click', function(e) {
+                e.stopPropagation();
+            });
+
+            /**
+             * Prevent dropdown close on clear button mousedown
+             */
+            clearBtn.on('mousedown', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        /**
+         * Copy to clipboard functionality
+         */
+        $(document).ready(function() {
+            $('.copy-btn').on('click', async function() {
+                const text = $(this).data('copy-text')?.trim() || '';
+
+                if (!text) return;
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const btn = $(this);
+                    const originalHtml = btn.html();
+
+                    btn.html('<i class="fa fa-check text-success"></i>');
+                    setTimeout(() => btn.html(originalHtml), 1200);
+                } catch (err) {
+                    console.error('Copy failed:', err);
+                }
+            });
+        });
+    </script>
+
+    <!-- Session Management Script -->
+    <script>
+        /**
+         * Session Management
+         * Handles session timeout warnings and keepalive
+         */
+
+        const SESSION_CONFIG = {
+            TIMEOUT_WARNING: 300,      // 5 minutes warning (in seconds)
+            SESSION_TIMEOUT: 1845,     // Total session timeout (in seconds)
+            HEARTBEAT_INTERVAL: 60     // Heartbeat every 60 seconds
+        };
+
+        let countdownTimer;
+        let countdownModalTimer;
+
+        /**
+         * Start countdown to session warning
+         */
+        function startCountdown() {
+            let timeLeft = SESSION_CONFIG.SESSION_TIMEOUT - SESSION_CONFIG.TIMEOUT_WARNING;
+
+            countdownTimer = setInterval(function() {
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    showSessionModal();
+                    startModalCountdown();
+                } else {
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        /**
+         * Start modal countdown
+         */
+        function startModalCountdown() {
+            let modalTimeLeft = SESSION_CONFIG.TIMEOUT_WARNING;
+
+            countdownModalTimer = setInterval(function() {
+                if (modalTimeLeft <= 0) {
+                    clearInterval(countdownModalTimer);
+                    window.location.href = "/Login/signout";
+                } else {
+                    const minutes = Math.floor(modalTimeLeft / 60);
+                    let seconds = modalTimeLeft % 60;
+
+                    if (seconds < 10) {
+                        seconds = "0" + seconds;
+                    }
+
+                    $('#countdown').text(`${minutes}:${seconds}`);
+                    modalTimeLeft--;
+                }
+            }, 1000);
+        }
+
+        /**
+         * Show session timeout modal
+         */
+        function showSessionModal() {
+            const modal = new bootstrap.Modal(document.getElementById('sessionModal'));
+            modal.show();
+        }
+
+        /**
+         * Extend session
+         */
+        function extendSession() {
+            $.ajax({
+                type: "POST",
+                url: "/Main/KeepSessionAlive",
+                xhrFields: { withCredentials: true },
+                success: function() {
+                    clearInterval(countdownModalTimer);
+
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('sessionModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+
+                    startCountdown();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to extend session:', error);
+                }
+            });
+        }
+
+        /**
+         * Send heartbeat to keep session alive
+         */
+        function sendHeartbeat() {
+            setInterval(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "/Main/KeepSessionAlive",
+                    xhrFields: { withCredentials: true },
+                    error: function(xhr, status, error) {
+                        console.error('Heartbeat failed:', error);
+                    }
+                });
+            }, SESSION_CONFIG.HEARTBEAT_INTERVAL * 1000);
+        }
+
+        /**
+         * Initialize session management
+         */
+        $(document).ready(function() {
+            // Start countdown
+            startCountdown();
+
+            // Start heartbeat
+            sendHeartbeat();
+
+            // Extend session button
+            $('#extendSessionButton').on('click', function() {
+                extendSession();
+            });
+
+            // Sign out button
+            $('#signOutButton').on('click', function() {
+                window.location.href = "/Login/signout";
+            });
+        });
+
+        /**
+         * Create session modal if it doesn't exist
+         */
+        $(document).ready(function() {
+            if ($('#sessionModal').length === 0) {
+                const modalHtml = `
+                    <div class="modal fade" id="sessionModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Session Timeout Warning</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Your session is about to expire in <strong><span id="countdown">5:00</span></strong> minutes!</p>
+                                    <p>Would you like to extend your session?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-danger" id="signOutButton">Sign Out</button>
+                                    <button type="button" class="btn btn-success" id="extendSessionButton">Extend Session</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $('body').append(modalHtml);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import SessionModal from './components/SessionModal';
 import OutletForm from './components/OutletForm';
+import EmailManagement from './pages/EmailManagement';
 
-const App = () => {
+// Outlet Management Component (existing functionality)
+const OutletManagement = () => {
+  const navigate = useNavigate();
   const [showOutletForm, setShowOutletForm] = useState(false);
   const [editMode, setEditMode] = useState('create');
   const [selectedOutlet, setSelectedOutlet] = useState(null);
@@ -77,6 +81,17 @@ const App = () => {
     <div className="main p-3">
       {/* Session Modal */}
       <SessionModal />
+
+      {/* Quick Navigation to Email Management */}
+      <div className="mb-4">
+        <button
+          onClick={() => navigate('/email')}
+          className="btn btn-outline-primary"
+        >
+          <i className="fa fa-envelope me-2"></i>
+          Go to Email Template Management
+        </button>
+      </div>
 
       {/* Content Header */}
       <div className="content-header">
@@ -206,6 +221,18 @@ const App = () => {
 
       <br /><br />
     </div>
+  );
+};
+
+// Main App Component with Routing
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<OutletManagement />} />
+        <Route path="/email/*" element={<EmailManagement />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

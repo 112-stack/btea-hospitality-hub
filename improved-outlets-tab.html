@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BTEA E-services · Improved Outlets Tab</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome (already loaded in the real portal) -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           BTEA · Outlets tab — refreshed design
+           Brand palette pulled from the existing portal:
+             primary  #815374 / #8a3d6f   accent #585994
+           Icons use Font Awesome ONLY (the live portal does not load
+           Bootstrap Icons, which is why the original cards were blank).
+        ========================================================= */
+        :root {
+            --btea-primary: #815374;
+            --btea-primary-dark: #6d4460;
+            --btea-accent: #585994;
+            --btea-soft: rgba(129, 83, 116, .08);
+            --ink: #2d3142;
+            --muted: #8a909c;
+            --line: #eef0f4;
+            --surface: #f7f7f9;
+        }
+
+        body {
+            background: #f9f9f9;
+            color: var(--ink);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .demo-shell { max-width: 1180px; }
+
+        .theme-icon { color: var(--btea-primary) !important; }
+
+        /* ---------- Toolbar above the grid ---------- */
+        .outlets-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .75rem;
+            margin-bottom: 1.25rem;
+        }
+        .outlets-count {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            font-weight: 600;
+            color: var(--btea-primary);
+            background: var(--btea-soft);
+            border: 1px solid rgba(129, 83, 116, .18);
+            border-radius: 50rem;
+            padding: .45rem 1rem;
+        }
+        .outlets-count .num {
+            background: var(--btea-primary);
+            color: #fff;
+            border-radius: 50rem;
+            padding: 0 .55rem;
+            font-size: .85rem;
+            line-height: 1.5rem;
+        }
+        .outlets-search {
+            position: relative;
+            flex: 1 1 240px;
+            max-width: 340px;
+        }
+        .outlets-search i {
+            position: absolute;
+            top: 50%;
+            left: .9rem;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+        }
+        .outlets-search input {
+            border-radius: 50rem;
+            padding-left: 2.4rem;
+        }
+        .outlets-search input:focus {
+            border-color: var(--btea-primary);
+            box-shadow: 0 0 0 .2rem rgba(129, 83, 116, .15);
+        }
+        .btn-btea {
+            color: #fff;
+            background: var(--btea-primary);
+            border: 1px solid var(--btea-primary-dark);
+        }
+        .btn-btea:hover { color: #fff; background: var(--btea-primary-dark); }
+        .btn-outline-btea {
+            color: var(--btea-primary);
+            border: 1px solid var(--btea-primary);
+            background: transparent;
+        }
+        .btn-outline-btea:hover { color: #fff; background: var(--btea-primary); }
+
+        /* ---------- Outlet card ---------- */
+        .outlet-card {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+            overflow: hidden;
+        }
+        .outlet-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -12px rgba(129, 83, 116, .35);
+            border-color: rgba(129, 83, 116, .35);
+        }
+
+        .outlet-card-header {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            padding: 1rem 1.15rem;
+            border-bottom: 1px solid var(--line);
+        }
+        .outlet-emblem {
+            flex-shrink: 0;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 1.15rem;
+            color: #fff;
+            background: linear-gradient(135deg, var(--btea-primary) 0%, var(--btea-accent) 120%);
+        }
+        .outlet-head-text { min-width: 0; flex: 1; }
+        .outlet-name {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .outlet-type {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--btea-accent);
+            background: rgba(88, 89, 148, .1);
+            border-radius: 50rem;
+            padding: .1rem .6rem;
+            margin-top: .25rem;
+        }
+
+        .outlet-card-body { padding: 1.05rem 1.15rem .35rem; }
+
+        .outlet-section { margin-bottom: 1rem; }
+        .outlet-section-title {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: .74rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .55rem;
+        }
+        .outlet-section-title i { color: var(--btea-primary); }
+
+        /* Management badge sits inline with its section title */
+        .mgmt-badge {
+            margin-left: auto;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: none;
+            border-radius: 50rem;
+            padding: .12rem .6rem;
+        }
+        .mgmt-self { color: #1b7a4b; background: #e6f4ec; }
+        .mgmt-outsourced { color: #9a5b00; background: #fdf0dc; }
+
+        /* Info tiles */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .55rem;
+        }
+        .info-tile.full { grid-column: 1 / -1; }
+        .info-tile {
+            display: flex;
+            align-items: flex-start;
+            gap: .6rem;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: .6rem .7rem;
+        }
+        .info-tile .ic {
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            background: #fff;
+            border: 1px solid var(--line);
+            color: var(--btea-primary);
+            font-size: .85rem;
+        }
+        .info-tile .txt { min-width: 0; }
+        .info-label {
+            display: block;
+            font-size: .72rem;
+            color: var(--muted);
+            line-height: 1.1;
+            margin-bottom: .15rem;
+        }
+        .info-value {
+            display: block;
+            font-weight: 600;
+            color: var(--ink);
+            font-size: .9rem;
+            word-break: break-word;
+        }
+        .info-value.rtl { direction: rtl; text-align: right; }
+
+        /* POS chips */
+        .pos-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .78rem;
+            font-weight: 600;
+            border-radius: 50rem;
+            padding: .15rem .55rem;
+        }
+        .pos-on { color: #1b7a4b; background: #e6f4ec; }
+        .pos-off { color: #6b7280; background: #eef0f3; }
+
+        /* Footer */
+        .outlet-card-footer {
+            display: flex;
+            gap: .5rem;
+            padding: .85rem 1.15rem;
+            border-top: 1px solid var(--line);
+            background: #fcfcfd;
+        }
+        .outlet-card-footer .btn { flex: 1; font-weight: 600; }
+
+        /* Inactive / duplicate records */
+        .outlet-card.is-inactive { opacity: .72; }
+        .outlet-card.is-inactive .outlet-emblem { background: #9aa0ab; }
+        .deleted-flag {
+            font-size: .68rem;
+            font-weight: 700;
+            color: #b42318;
+            background: #fde7e4;
+            border-radius: 50rem;
+            padding: .08rem .5rem;
+            margin-left: .4rem;
+            vertical-align: middle;
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            color: #b42318;
+            font-weight: 600;
+            font-size: .85rem;
+            margin: .25rem 0 1.25rem;
+        }
+        .section-divider::before,
+        .section-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #f2c5bf;
+        }
+
+        .outlets-empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 3rem 1rem;
+        }
+        .outlets-empty i { font-size: 2.5rem; opacity: .35; }
+    </style>
+</head>
+<body>
+    <div class="demo-shell container py-4">
+
+        <h4 class="fw-bold mb-1" style="color:#8a3d6f;">Outlets</h4>
+        <p class="text-muted mb-4">Refreshed card design for the 4&nbsp;Year Classification Visit · Outlets tab.</p>
+
+        <!-- ============ TOOLBAR ============ -->
+        <div class="outlets-toolbar">
+            <span class="outlets-count">
+                <i class="fa-solid fa-shop theme-icon"></i>
+                Outlets
+                <span class="num" id="outletsCount">0</span>
+            </span>
+
+            <div class="outlets-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" id="outletsSearch" class="form-control"
+                       placeholder="Search name, type, manager…" autocomplete="off">
+            </div>
+
+            <button class="btn btn-outline-btea ms-auto" type="button"
+                    data-bs-toggle="modal" data-bs-target="#addNewOutletModal">
+                <i class="fa-solid fa-plus me-1"></i> Add New Outlet
+            </button>
+        </div>
+
+        <!-- ============ GRID ============ -->
+        <div id="OutletsContainer" class="row g-0"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        /* =====================================================================
+           DROP-IN REPLACEMENT for the Outlets tab renderer.
+           Replace the existing bindOutlets() in the visit-report view with this.
+           Field names match the API payload already used by the portal
+           (NameEnglish, NameArabic, TypeText, Location, ManagementTypeValue,
+            ManagerName, ManagerPhone, ManagerEmail, Capacity, PmsId, PosName,
+            PosExist, PosIntegrated, LeasingOfficeName, From, To, Id, state).
+        ===================================================================== */
+
+        const OUTSOURCED = 449930001;       // management_type value for "Outsourced"
+
+        // Escape user-supplied strings before injecting into markup.
+        function esc(v) {
+            if (v === null || v === undefined || v === '') return '';
+            return String(v)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        const val = v => (v === null || v === undefined || v === '' ? '-' : esc(v));
+
+        function posBadge(outlet) {
+            if (outlet.PosIntegrated)
+                return '<span class="pos-chip pos-on"><i class="fa-solid fa-plug-circle-check"></i> POS Integrated</span>';
+            if (outlet.PosExist)
+                return '<span class="pos-chip pos-off"><i class="fa-solid fa-cash-register"></i> POS' +
+                    (outlet.PosName ? ': ' + esc(outlet.PosName) : '') + '</span>';
+            return '<span class="pos-chip pos-off"><i class="fa-solid fa-ban"></i> No POS</span>';
+        }
+
+        function renderOutlet(o) {
+            const isDeleted = o.state === 2;
+            const isOutsourced = Number(o.ManagementTypeValue) === OUTSOURCED;
+
+            const mgmtBadge = isOutsourced
+                ? '<span class="mgmt-badge mgmt-outsourced">Outsourced</span>'
+                : '<span class="mgmt-badge mgmt-self">Self Operated</span>';
+
+            // Transfer / leasing block is only meaningful for outsourced outlets.
+            const transferSection = isOutsourced ? `
+                <div class="outlet-section">
+                    <div class="outlet-section-title">
+                        <i class="fa-solid fa-file-contract"></i> Transfer / Leasing
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-tile full">
+                            <span class="ic"><i class="fa-solid fa-building"></i></span>
+                            <div class="txt">
+                                <span class="info-label">Hospitality Office</span>
+                                <span class="info-value">${val(o.LeasingOfficeName)}</span>
+                            </div>
+                        </div>
+                        <div class="info-tile">
+                            <span class="ic"><i class="fa-solid fa-calendar-day"></i></span>
+                            <div class="txt">
+                                <span class="info-label">From</span>
+                                <span class="info-value">${val(o.From)}</span>
+                            </div>
+                        </div>
+                        <div class="info-tile">
+                            <span class="ic"><i class="fa-solid fa-calendar-check"></i></span>
+                            <div class="txt">
+                                <span class="info-label">To</span>
+                                <span class="info-value">${val(o.To)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>` : '';
+
+            const footer = isDeleted ? '' : `
+                <div class="outlet-card-footer">
+                    <button class="btn btn-outline-danger btn-sm"
+                            onclick="openDeleteOutletModal('${esc(o.Id)}','${esc(o.NameEnglish)}')">
+                        <i class="fa-solid fa-trash me-1"></i> Delete
+                    </button>
+                    <button class="btn btn-btea btn-sm" onclick="openEditOutletModal('${esc(o.Id)}')">
+                        <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                    </button>
+                </div>`;
+
+            return `
+            <div class="col-xl-4 col-lg-6 px-2 mb-3 outlet-col"
+                 data-search="${esc([o.NameEnglish, o.NameArabic, o.TypeText, o.ManagerName].join(' ').toLowerCase())}">
+                <div class="outlet-card h-100 ${isDeleted ? 'is-inactive' : ''}">
+
+                    <!-- HEADER -->
+                    <div class="outlet-card-header">
+                        <div class="outlet-emblem"><i class="fa-solid fa-shop"></i></div>
+                        <div class="outlet-head-text">
+                            <h5 class="outlet-name" title="${esc(o.NameEnglish)}">
+                                ${val(o.NameEnglish)}${isDeleted ? '<span class="deleted-flag">DELETED</span>' : ''}
+                            </h5>
+                            <span class="outlet-type"><i class="fa-solid fa-tag"></i> ${val(o.TypeText)}</span>
+                        </div>
+                    </div>
+
+                    <div class="outlet-card-body">
+
+                        <!-- GENERAL -->
+                        <div class="outlet-section">
+                            <div class="outlet-section-title">
+                                <i class="fa-solid fa-circle-info"></i> General Information
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-tile">
+                                    <span class="ic"><i class="fa-solid fa-language"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">Arabic Name</span>
+                                        <span class="info-value rtl">${val(o.NameArabic)}</span>
+                                    </div>
+                                </div>
+                                <div class="info-tile">
+                                    <span class="ic"><i class="fa-solid fa-location-dot"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">Location</span>
+                                        <span class="info-value">${val(o.Location)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- POINT OF SALE -->
+                        <div class="outlet-section">
+                            <div class="outlet-section-title">
+                                <i class="fa-solid fa-cash-register"></i> Point of Sale
+                                <span class="ms-auto">${posBadge(o)}</span>
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-tile">
+                                    <span class="ic"><i class="fa-solid fa-chair"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">Capacity</span>
+                                        <span class="info-value">${val(o.Capacity)}</span>
+                                    </div>
+                                </div>
+                                <div class="info-tile">
+                                    <span class="ic"><i class="fa-solid fa-hashtag"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">PMS ID</span>
+                                        <span class="info-value">${val(o.PmsId)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MANAGEMENT -->
+                        <div class="outlet-section">
+                            <div class="outlet-section-title">
+                                <i class="fa-solid fa-user-tie"></i> Management ${mgmtBadge}
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-tile">
+                                    <span class="ic"><i class="fa-solid fa-user"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">Manager Name</span>
+                                        <span class="info-value">${val(o.ManagerName)}</span>
+                                    </div>
+                                </div>
+                                <div class="info-tile">
+                                    <span class="ic"><i class="fa-solid fa-phone"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">Manager Phone</span>
+                                        <span class="info-value">${val(o.ManagerPhone)}</span>
+                                    </div>
+                                </div>
+                                <div class="info-tile full">
+                                    <span class="ic"><i class="fa-solid fa-envelope"></i></span>
+                                    <div class="txt">
+                                        <span class="info-label">Manager Email</span>
+                                        <span class="info-value">${val(o.ManagerEmail)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        ${transferSection}
+                    </div>
+
+                    ${footer}
+                </div>
+            </div>`;
+        }
+
+        function bindOutlets(outlets) {
+            const container = document.getElementById('OutletsContainer');
+            const countEl = document.getElementById('outletsCount');
+
+            if (!outlets || outlets.length === 0) {
+                if (countEl) countEl.textContent = '0';
+                container.innerHTML = `
+                    <div class="outlets-empty">
+                        <i class="fa-solid fa-shop"></i>
+                        <p class="mb-0 mt-3">No outlets found</p>
+                    </div>`;
+                return;
+            }
+
+            const active = outlets.filter(o => o.state !== 2);
+            const deleted = outlets.filter(o => o.state === 2);
+            if (countEl) countEl.textContent = active.length;
+
+            let html = active.map(renderOutlet).join('');
+            if (active.length && deleted.length) {
+                html += `<div class="col-12 px-2"><div class="section-divider">Duplicate / inactive records</div></div>`;
+            }
+            html += deleted.map(renderOutlet).join('');
+            container.innerHTML = html;
+        }
+
+        /* ---- live search filter (purely client-side) ---- */
+        document.getElementById('outletsSearch').addEventListener('input', function () {
+            const q = this.value.trim().toLowerCase();
+            let shown = 0;
+            document.querySelectorAll('#OutletsContainer .outlet-col').forEach(col => {
+                const match = !q || col.dataset.search.includes(q);
+                col.style.display = match ? '' : 'none';
+                if (match) shown++;
+            });
+            const countEl = document.getElementById('outletsCount');
+            if (countEl) countEl.textContent = shown;
+        });
+
+        /* ---- modal stubs so the demo buttons don't error ---- */
+        function openEditOutletModal(id) { console.log('edit', id); }
+        function openDeleteOutletModal(id, name) { console.log('delete', id, name); }
+
+        /* =====================================================================
+           SAMPLE DATA — mirrors the records on the live page so you can preview.
+           (In production this array comes from /Hotel/GetPropertyOutlets.)
+        ===================================================================== */
+        const sampleOutlets = [
+            { Id:'9f26', NameEnglish:'CAFE (TESTING)', NameArabic:'CAFE (TESTING)', TypeText:'Cafe', Location:'12',
+              ManagementTypeValue:449930000, ManagerName:'Mohamed JS arabica', ManagerPhone:'34131805', ManagerEmail:'mebrahim@btea.bh',
+              Capacity:'40', PmsId:'PMS-114', PosExist:true, PosIntegrated:true, state:0 },
+            { Id:'a026', NameEnglish:'FINE DINING (TESTING)', NameArabic:'FINE DINING (TESTING)', TypeText:'Fine Dining', Location:'Second Floor',
+              ManagementTypeValue:449930000, ManagerName:'Mohamed test', ManagerPhone:'34131805', ManagerEmail:'mebrahim@btea.bh',
+              Capacity:'80', PmsId:'PMS-220', PosExist:true, PosIntegrated:false, PosName:'Micros', state:0 },
+            { Id:'a326', NameEnglish:'MAIN RESTAURANT (TESTING)', NameArabic:'MAIN RESTAURANT (TESTING)', TypeText:'Main Restaurant', Location:'3',
+              ManagementTypeValue:449930001, ManagerName:'Khaled Sulaiman', ManagerPhone:'39888611', ManagerEmail:'ksulaiman@btea.bh',
+              Capacity:'150', PmsId:'PMS-301', PosExist:true, PosIntegrated:true,
+              LeasingOfficeName:'GULF HOTELS GROUP B.S.C', From:'2025-01-01', To:'2027-12-31', state:0 },
+            { Id:'a126', NameEnglish:'LOUNGE (TESTING)', NameArabic:'LOUNGE (TESTING)', TypeText:'Lounge', Location:'1',
+              ManagementTypeValue:449930000, ManagerName:'Mohamed Ebrahim', ManagerPhone:'34131805', ManagerEmail:'mebrahim@btea.bh',
+              Capacity:'25', PmsId:'PMS-118', PosExist:false, PosIntegrated:false, state:0 },
+            { Id:'a526', NameEnglish:'Ramadan Tent Outlet 2/3', NameArabic:'Ramadan Tent Outlet 2/3', TypeText:'Ramadan Tent', Location:'12 Manama',
+              ManagementTypeValue:449930000, ManagerName:'Abdulla Kawaz', ManagerPhone:'33133331', ManagerEmail:'JiraTicketVersion2@email.com',
+              Capacity:'200', PmsId:'-', PosExist:false, PosIntegrated:false, state:0 },
+            { Id:'a826', NameEnglish:'SPECIALITY RESTAURANT (TESTING)', NameArabic:'SPECIALITY RESTAURANT (TESTING)', TypeText:'Speciality Restaurant (Rest_SP)', Location:'First Floor',
+              ManagementTypeValue:449930000, ManagerName:'Mohamed Ebrahim', ManagerPhone:'34131805', ManagerEmail:'mebrahim@btea.bh',
+              Capacity:'60', PmsId:'PMS-410', PosExist:true, PosIntegrated:true, state:0 },
+            { Id:'a926', NameEnglish:'Rmai Dan23', NameArabic:'رامي ضان23', TypeText:'Ramadan Tent', Location:'TEST',
+              ManagementTypeValue:449930000, ManagerName:'Mikita Halynia', ManagerPhone:'34532333', ManagerEmail:'hjassim@btea.bh',
+              Capacity:'30', PmsId:'-', PosExist:false, PosIntegrated:false, state:2 }
+        ];
+
+        bindOutlets(sampleOutlets);
+    </script>
+</body>
+</html>

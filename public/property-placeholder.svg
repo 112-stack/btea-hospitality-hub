@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="title description">
+  <title id="title">Hospitality property</title>
+  <desc id="description">Stylized waterfront hotel illustration</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#805474"/><stop offset="1" stop-color="#c18da7"/></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#5cd6c0"/><stop offset="1" stop-color="#287d82"/></linearGradient>
+  </defs>
+  <rect width="900" height="520" fill="url(#sky)"/>
+  <circle cx="720" cy="105" r="55" fill="#f6cf8b" opacity=".9"/>
+  <path d="M0 360C150 330 260 390 420 355s300-15 480 15v150H0z" fill="url(#water)"/>
+  <path d="M190 145h410v260H190z" fill="#fff" opacity=".94"/>
+  <path d="M155 405h500v25H155zM235 100h320v45H235z" fill="#f0bc74"/>
+  <g fill="#815374"><path d="M240 195h70v58h-70zM360 195h70v58h-70zM480 195h70v58h-70zM240 286h70v58h-70zM480 286h70v58h-70z"/><path d="M360 275h70v130h-70z"/></g>
+  <g fill="#fff" opacity=".55"><path d="M250 205h50v8h-50zM370 205h50v8h-50zM490 205h50v8h-50z"/></g>
+  <path d="M90 405c28-74 56-74 84 0M655 405c26-87 52-87 78 0" fill="none" stroke="#184d4e" stroke-width="16" stroke-linecap="round"/>
+</svg>

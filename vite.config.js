@@ -8,11 +8,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: ['hospitality-companion-icon.svg'],
       manifest: {
-        name: 'BTEA Web Portal',
-        short_name: 'BTEA Portal',
-        description: 'Bahrain Tourism and Exhibitions Authority Portal',
+        id: '/?source=pwa',
+        name: 'Hospitality Services Companion',
+        short_name: 'Hospitality',
+        description: 'Independent, source-attributed Bahrain hospitality service preparation companion.',
         theme_color: '#815374',
         background_color: '#ffffff',
         display: 'standalone',
@@ -21,19 +22,15 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/Content/images/tab-logo.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/Content/images/tab-logo.png',
-            sizes: '512x512',
-            type: 'image/png',
+            src: '/hospitality-companion-icon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
           },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        navigateFallbackDenylist: [/^\/portal\.html/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -91,19 +88,26 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
+      input: {
+        landing: path.resolve(__dirname, 'index.html'),
+        portal: path.resolve(__dirname, 'portal.html'),
+      },
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'chart-vendor': ['chart.js', 'recharts', 'react-chartjs-2'],
           'ui-vendor': ['framer-motion', '@headlessui/react'],
-          'utils': ['axios', 'date-fns', 'clsx'],
+          'utils': ['date-fns', 'clsx'],
         },
       },
     },
     chunkSizeWarningLimit: 1000,
   },
   server: {
-    port: 3000,
-    open: true,
+    port: 4173,
+    open: false,
+    proxy: {
+      '/api/portal': 'http://127.0.0.1:4174',
+    },
   },
 })

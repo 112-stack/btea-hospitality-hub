@@ -9,8 +9,8 @@ import {
   FiArrowLeft,
   FiSave,
   FiEye,
-  FiUndo,
-  FiRedo,
+  FiCornerUpLeft,
+  FiCornerUpRight,
   FiPlus,
   FiType,
   FiImage,
@@ -203,7 +203,7 @@ const TemplateEditor = ({ template, onClose, onPreview }) => {
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 title="Undo (Ctrl+Z)"
               >
-                <FiUndo className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                <FiCornerUpLeft className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </button>
               <button
                 onClick={redo}
@@ -211,7 +211,7 @@ const TemplateEditor = ({ template, onClose, onPreview }) => {
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 title="Redo (Ctrl+Shift+Z)"
               >
-                <FiRedo className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                <FiCornerUpRight className="w-4 h-4 text-gray-600 dark:text-gray-300" />
               </button>
             </div>
 

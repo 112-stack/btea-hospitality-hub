@@ -1,0 +1,14 @@
+{
+  "versionName": "2.1.0",
+  "versionCode": 210,
+  "packageName": "app.hospitality.companion",
+  "title": "Hospitality Services Companion",
+  "shortDescription": "Independent Bahrain hospitality service guide with private local checklists.",
+  "category": "BUSINESS",
+  "contentRating": "Everyone",
+  "containsAds": false,
+  "privacyPolicyUrl": "https://github.com/112-stack/btea-hospitality-hub/blob/main/PRIVACY.md",
+  "website": "https://github.com/112-stack/btea-hospitality-hub",
+  "supportEmail": "Use the verified Play Console developer support email before submission.",
+  "fullDescription": "Hospitality Services Companion is an independent, source-attributed preparation tool for Bahrain hospitality and tourism services.\n\nUse the app to browse 19 publicly listed service areas, review published requirements, save favorites, prepare application working copies, track document readiness, complete inspection checklists, and keep complaint drafts locally on your device.\n\nThe app adds original offline preparation and tracking features; it is not a webview of the government portal. Official eKey, payment, inspection, complaint, and regulatory actions remain on their named external sources.\n\nThis app is not operated by, affiliated with, or endorsed by BTEA or the Government of Bahrain. The primary public source is https://portal.btea.bh/ and each service includes its source link.\n\nThe companion does not process payments, make regulatory decisions, send SMS, bypass authentication, or submit information to protected government systems."
+}

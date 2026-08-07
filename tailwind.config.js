@@ -2,6 +2,7 @@
 export default {
   content: [
     "./index.html",
+    "./portal.html",
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   darkMode: 'class',
@@ -19,8 +20,8 @@ export default {
         },
       },
       fontFamily: {
-        'din-light': ['dinlightregular', 'sans-serif'],
-        'din-medium': ['dinmedium', 'sans-serif'],
+        'din-light': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'Segoe UI', 'sans-serif'],
+        'din-medium': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -79,8 +80,8 @@ export default {
           "accent": "#55d6be",
           "neutral": "#1f2937",
           "base-100": "#ffffff",
-          "base-200": "#f9fafb",
-          "base-300": "#f3f4f6",
+          "base-200": "#f5f5f7",
+          "base-300": "#e5e5ea",
           "info": "#3b82f6",
           "success": "#10b981",
           "warning": "#f59e0b",
@@ -91,9 +92,9 @@ export default {
           "secondary": "#f0bc74",
           "accent": "#10b981",
           "neutral": "#f9fafb",
-          "base-100": "#111827",
-          "base-200": "#1f2937",
-          "base-300": "#374151",
+          "base-100": "#1c1c1e",
+          "base-200": "#101012",
+          "base-300": "#3a3a3c",
           "info": "#60a5fa",
           "success": "#34d399",
           "warning": "#fbbf24",

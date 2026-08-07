@@ -1,0 +1,21 @@
+{
+  "collectsUserData": false,
+  "sharesUserData": false,
+  "dataEncryptedInTransit": true,
+  "userCanRequestDeletion": "Not applicable: no developer account or remote developer storage. Users can reset local data or uninstall the app.",
+  "independentSecurityReview": false,
+  "familiesPolicy": false,
+  "permissions": [
+    "android.permission.INTERNET"
+  ],
+  "localOnlyData": [
+    "service favorites",
+    "synthetic application working copies",
+    "document names and sizes",
+    "inspection checklists",
+    "complaint working copies",
+    "accessibility settings",
+    "outlet and campaign drafts"
+  ],
+  "revalidationTrigger": "Repeat the Data safety audit before adding analytics, crash reporting, accounts, remote sync, advertising, push notifications, or another SDK."
+}

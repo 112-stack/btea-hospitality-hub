@@ -66,7 +66,7 @@ const useAuthStore = create(
           set({ sessionExpiresAt: expiresAt });
         },
 
-        showSessionWarning: (show) => {
+        setSessionWarningVisible: (show) => {
           set({ showSessionWarning: show });
         },
 
@@ -129,7 +129,7 @@ if (typeof window !== 'undefined') {
       const warningThreshold = state.sessionWarningTime * 1000;
 
       if (timeUntilExpiry <= warningThreshold && timeUntilExpiry > 0) {
-        state.showSessionWarning(true);
+        state.setSessionWarningVisible(true);
       } else if (timeUntilExpiry <= 0) {
         state.logout();
       }

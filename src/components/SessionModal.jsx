@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 
 const SessionModal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,9 +20,13 @@ const SessionModal = () => {
   // Keep session alive
   const keepSessionAlive = useCallback(async () => {
     try {
-      await axios.post('/Main/KeepSessionAlive', {}, {
-        withCredentials: true
+      const response = await fetch('/Main/KeepSessionAlive', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
       });
+      if (!response.ok) throw new Error(`Session heartbeat failed (${response.status})`);
     } catch (error) {
       console.error('Failed to keep session alive:', error);
     }

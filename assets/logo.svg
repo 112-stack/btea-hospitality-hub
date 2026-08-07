@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
+  <title id="title">Hospitality Services Companion</title>
+  <defs>
+    <linearGradient id="background" x1="128" y1="64" x2="896" y2="960" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#956886"/>
+      <stop offset="1" stop-color="#4d2e43"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="340" y1="255" x2="720" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0cf91"/>
+      <stop offset="1" stop-color="#c28a32"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#background)"/>
+  <circle cx="780" cy="218" r="206" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="32"/>
+  <circle cx="200" cy="844" r="168" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="28"/>
+  <rect x="244" y="176" width="536" height="672" rx="128" fill="#fffafc"/>
+  <path d="M512 282c-105 0-190 85-190 190 0 142 190 302 190 302s190-160 190-302c0-105-85-190-190-190Z" fill="url(#gold)"/>
+  <circle cx="512" cy="472" r="94" fill="#68445c"/>
+  <path d="m469 474 29 29 62-68" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="34"/>
+  <path d="M361 773h302" stroke="#68445c" stroke-linecap="round" stroke-opacity=".28" stroke-width="28"/>
+</svg>

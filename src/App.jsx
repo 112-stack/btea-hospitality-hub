@@ -1,239 +1,166 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import SessionModal from './components/SessionModal';
-import OutletForm from './components/OutletForm';
+import { useEffect } from 'react';
+import { HashRouter, NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import {
+  FiBell,
+  FiBookOpen,
+  FiBriefcase,
+  FiClipboard,
+  FiCreditCard,
+  FiFileText,
+  FiHome,
+  FiMail,
+  FiMapPin,
+  FiMessageSquare,
+  FiSliders,
+} from 'react-icons/fi';
+import MobileTabBar from './components/portal/MobileTabBar';
+import useNativeAppSetup from './hooks/useNativeAppSetup';
+import Applications from './pages/Applications';
+import Complaints from './pages/Complaints';
+import Dashboard from './pages/Dashboard';
 import EmailManagement from './pages/EmailManagement';
+import Inspections from './pages/Inspections';
+import KnowledgeCenter from './pages/KnowledgeCenter';
+import MobileMore from './pages/MobileMore';
+import Outlets from './pages/Outlets';
+import Payments from './pages/Payments';
+import Privacy from './pages/Privacy';
+import Services from './pages/Services';
+import { officialPortalLinks, portalApi } from './services/portalApi';
+import usePortalStore from './stores/portalStore';
 
-// Outlet Management Component (existing functionality)
-const OutletManagement = () => {
-  const navigate = useNavigate();
-  const [showOutletForm, setShowOutletForm] = useState(false);
-  const [editMode, setEditMode] = useState('create');
-  const [selectedOutlet, setSelectedOutlet] = useState(null);
-  const [outlets, setOutlets] = useState([]);
+const navigationSections = [
+  {
+    label: 'Workspace',
+    items: [
+      { to: '/', label: 'Overview', icon: FiHome, end: true },
+      { to: '/services', label: 'Services', icon: FiBriefcase },
+      { to: '/applications', label: 'Applications', icon: FiFileText },
+      { to: '/payments', label: 'Payments', icon: FiCreditCard },
+      { to: '/inspections', label: 'Inspections', icon: FiClipboard },
+    ],
+  },
+  {
+    label: 'Property',
+    items: [
+      { to: '/outlets', label: 'Outlets', icon: FiMapPin },
+    ],
+  },
+  {
+    label: 'Communication',
+    items: [
+      { to: '/complaints', label: 'Complaints', icon: FiMessageSquare },
+      { to: '/email', label: 'Campaigns', icon: FiMail },
+    ],
+  },
+  {
+    label: 'Help',
+    items: [
+      { to: '/knowledge', label: 'Knowledge', icon: FiBookOpen },
+    ],
+  },
+];
 
-  // Initialize from server data if available
+const allNavigation = navigationSections.flatMap((section) => section.items);
+const routeOnlyNavigation = [
+  { to: '/more', label: 'More' },
+  { to: '/privacy', label: 'Privacy' },
+];
+
+const PortalLayout = ({ children }) => {
+  const location = useLocation();
+  const { connected, isNative, platform } = useNativeAppSetup();
+  const {
+    applications,
+    apiMessage,
+    apiStatus,
+    contrast,
+    fontScale,
+    setApiStatus,
+    setContrast,
+    setFontScale,
+  } = usePortalStore();
+  const current = [...allNavigation, ...routeOnlyNavigation].find((item) => item.end ? location.pathname === item.to : location.pathname.startsWith(item.to)) || allNavigation[0];
+  const attentionCount = applications.filter((application) => application.status === 'Action required').length;
+
   useEffect(() => {
-    if (window.outletData) {
-      setOutlets(window.outletData.processingOutlets || []);
-    }
-  }, []);
-
-  const handleCreateOutlet = () => {
-    setEditMode('create');
-    setSelectedOutlet(null);
-    setShowOutletForm(true);
-  };
-
-  const handleEditOutlet = (outlet) => {
-    setEditMode('edit');
-    setSelectedOutlet(outlet);
-    setShowOutletForm(true);
-  };
-
-  const handleFormSubmit = async (formData) => {
-    try {
-      // Submit to server
-      const response = await fetch('/EditOutlet/doUpdate', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (response.ok) {
-        // Update local state
-        if (editMode === 'create') {
-          const newOutlet = Object.fromEntries(formData);
-          setOutlets(prev => [...prev, newOutlet]);
-        } else {
-          // Update existing outlet
-          setOutlets(prev =>
-            prev.map(outlet =>
-              outlet.id === selectedOutlet?.id
-                ? { ...outlet, ...Object.fromEntries(formData) }
-                : outlet
-            )
-          );
-        }
-
-        setShowOutletForm(false);
-        alert('Outlet saved successfully!');
-      } else {
-        alert('Failed to save outlet. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error saving outlet:', error);
-      alert('An error occurred while saving the outlet.');
-    }
-  };
-
-  const handleFormCancel = () => {
-    setShowOutletForm(false);
-    setSelectedOutlet(null);
-  };
-
-  const handleDeleteOutlet = (outletId) => {
-    if (confirm('Are you sure you want to delete this outlet?')) {
-      setOutlets(prev => prev.filter(outlet => outlet.id !== outletId));
-    }
-  };
+    let active = true;
+    portalApi.health()
+      .then((result) => active && setApiStatus('ready', result.message))
+      .catch(() => active && setApiStatus('local', 'Browser-only working copy; API adapter unavailable'));
+    return () => { active = false; };
+  }, [setApiStatus]);
 
   return (
-    <div className="main p-3">
-      {/* Session Modal */}
-      <SessionModal />
-
-      {/* Quick Navigation to Email Management */}
-      <div className="mb-4">
-        <button
-          onClick={() => navigate('/email')}
-          className="btn btn-outline-primary"
-        >
-          <i className="fa fa-envelope me-2"></i>
-          Go to Email Template Management
-        </button>
-      </div>
-
-      {/* Content Header */}
-      <div className="content-header">
-        <h1>Edit Outlet</h1>
-        <hr />
-      </div>
-
-      <br />
-
-      {/* Processing Outlets Table */}
-      <div className="card border-0 shadow-sm mb-4">
-        <div className="card-header border-0 bg-white">
-          <div className="d-flex justify-content-between align-items-center">
-            <h4 className="mb-0">Processing Outlets</h4>
-            <button
-              className="btn btn-primary"
-              onClick={handleCreateOutlet}
-            >
-              <i className="fa fa-plus me-2"></i>
-              Add New Outlet
-            </button>
-          </div>
-        </div>
-        <div className="card-body">
-          <div className="table-responsive">
-            <table className="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>Outlet Name (EN)</th>
-                  <th>Outlet Name (AR)</th>
-                  <th>Outlet Status</th>
-                  <th>Outlet Type</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {outlets.length === 0 ? (
-                  <tr>
-                    <td colSpan="5" className="text-center text-muted py-4">
-                      <i className="fa fa-info-circle me-2"></i>
-                      No outlets added yet. Click "Add New Outlet" to get started.
-                    </td>
-                  </tr>
-                ) : (
-                  outlets.map((outlet, index) => (
-                    <tr key={outlet.id || index}>
-                      <td>{outlet.name}</td>
-                      <td>{outlet.arabic_name}</td>
-                      <td>
-                        <span className={`badge ${
-                          outlet.status === 'New' ? 'bg-success' :
-                          outlet.status === 'Edit' ? 'bg-warning' :
-                          'bg-secondary'
-                        }`}>
-                          {outlet.status || 'Pending'}
-                        </span>
-                      </td>
-                      <td>{outlet.typestr || 'N/A'}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-primary me-2"
-                          onClick={() => handleEditOutlet(outlet)}
-                          title="Edit"
-                        >
-                          <i className="fa fa-edit"></i>
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() => handleDeleteOutlet(outlet.id)}
-                          title="Delete"
-                        >
-                          <i className="fa fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* Help Documentation */}
-      <hr />
-      <div className="mb-3">
-        <a target="_blank" href="/Content/docs/Hotels Classification Decree.pdf">
-          <u>Resolution No. (4) 2015, regarding classification of hotels, hotel apartments, catering and beverage services in hotels.</u>
+    <div className={`portal-shell ${contrast === 'high' ? 'contrast-high' : ''} ${isNative ? 'native-shell' : ''}`} style={{ '--portal-font-scale': fontScale }} data-platform={platform}>
+      <a className="portal-skip-link" href="#portal-content">Skip to workspace</a>
+      <aside className="portal-sidebar" aria-label="Hospitality library">
+        <a href="./" className="portal-brand" aria-label="Open the public BTEA service directory">
+          <span className="portal-brand-mark" aria-hidden="true">BH</span>
+          <span><strong>Hospitality Hub</strong><small>Preserved operations portal</small></span>
         </a>
-      </div>
+        <nav className="portal-nav" aria-label="Portal navigation">
+          {navigationSections.map((section) => (
+            <div className="portal-nav-section" key={section.label}>
+              <p>{section.label}</p>
+              {section.items.map(({ to, label, icon: Icon, end }) => (
+                <NavLink key={to} to={to} end={end} className={({ isActive }) => `portal-nav-item ${isActive ? 'active' : ''}`}>
+                  <Icon aria-hidden="true" /><span>{label}</span>
+                  {label === 'Applications' && attentionCount > 0 && <b aria-label={`${attentionCount} application requires attention`}>{attentionCount}</b>}
+                </NavLink>
+              ))}
+            </div>
+          ))}
+        </nav>
+        <div className={`portal-api-status ${apiStatus}`} role="status"><i aria-hidden="true"></i><span><strong>{apiStatus === 'ready' ? 'Local adapter ready' : 'Local working copy'}</strong><small>{apiMessage}</small></span></div>
+        <a className="portal-help" target="_blank" rel="noreferrer" href={officialPortalLinks.regulations}><FiBookOpen aria-hidden="true" /><span><strong>Laws & regulations</strong><small>Official portal reference</small></span></a>
+        <p className="portal-note">Preparation, tracking, and simulation only. Official identity, payment, and regulatory decisions remain with BTEA.</p>
+      </aside>
 
-      <br />
-
-      {/* Submit Button */}
-      {outlets.length > 0 && (
-        <div className="row">
-          <div className="text-center">
-            <button
-              id="submission_button"
-              type="button"
-              className="btn btn-primary btn-lg"
-              style={{ width: '300px' }}
-              onClick={() => {
-                if (confirm('Are you sure you want to submit all outlet changes?')) {
-                  document.getElementById('outletUpdateForm')?.submit();
-                }
-              }}
-            >
-              <i className="fa fa-check me-2"></i>
-              Submit All Changes
-            </button>
+      <div className="portal-main">
+        <header className="portal-toolbar">
+          <div className="portal-toolbar-context"><span>Workspace</span><strong>{current.label}</strong></div>
+          <div className="mobile-app-identity"><span aria-hidden="true">HC</span><div><strong>Hospitality Companion</strong><small>Independent service guide</small></div></div>
+          <div className="portal-toolbar-actions">
+            <span className={`mobile-connectivity ${connected ? 'online' : 'offline'}`}><i aria-hidden="true"></i>{connected ? 'Online' : 'Offline'}</span>
+            <div className="text-size-control" aria-label="Text size controls"><button type="button" onClick={() => setFontScale(fontScale - 0.1)} aria-label="Decrease text size">A−</button><button type="button" onClick={() => setFontScale(fontScale + 0.1)} aria-label="Increase text size">A+</button></div>
+            <button type="button" className="toolbar-icon-button" onClick={() => setContrast(contrast === 'high' ? 'standard' : 'high')} aria-pressed={contrast === 'high'} aria-label="Toggle high contrast"><FiSliders aria-hidden="true" /></button>
+            <NavLink to="/applications" className="toolbar-icon-button notification-button" aria-label={`${attentionCount} applications require attention`}><FiBell aria-hidden="true" />{attentionCount > 0 && <b>{attentionCount}</b>}</NavLink>
+            <a className="official-login-button" href={officialPortalLinks.ekey2} target="_blank" rel="noreferrer">Official eKey login</a>
+            <div className="portal-property"><i aria-hidden="true"></i>TEST HOTEL</div>
           </div>
-        </div>
-      )}
-
-      {/* Outlet Form Modal */}
-      {showOutletForm && (
-        <OutletForm
-          mode={editMode}
-          initialData={selectedOutlet}
-          onSubmit={handleFormSubmit}
-          onCancel={handleFormCancel}
-        />
-      )}
-
-      <br /><br />
+        </header>
+        <main id="portal-content" className="portal-content" tabIndex="-1">
+          {!connected && <div className="mobile-offline-banner" role="status">Offline mode is active. Saved services, applications, and checklists remain available on this device.</div>}
+          {children}
+        </main>
+      </div>
+      <MobileTabBar />
     </div>
   );
 };
 
-// Main App Component with Routing
-const App = () => {
-  return (
-    <BrowserRouter>
+const App = () => (
+  <HashRouter>
+    <PortalLayout>
       <Routes>
-        <Route path="/" element={<OutletManagement />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/:serviceId" element={<Services />} />
+        <Route path="/applications" element={<Applications />} />
+        <Route path="/applications/:applicationId" element={<Applications />} />
+        <Route path="/payments" element={<Payments />} />
+        <Route path="/inspections" element={<Inspections />} />
+        <Route path="/outlets" element={<Outlets />} />
+        <Route path="/complaints" element={<Complaints />} />
         <Route path="/email/*" element={<EmailManagement />} />
+        <Route path="/knowledge" element={<KnowledgeCenter />} />
+        <Route path="/more" element={<MobileMore />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
-  );
-};
+    </PortalLayout>
+  </HashRouter>
+);
 
 export default App;

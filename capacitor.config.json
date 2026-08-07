@@ -1,0 +1,25 @@
+{
+  "appId": "app.hospitality.companion",
+  "appName": "Hospitality Services Companion",
+  "webDir": "dist-mobile",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#f7f3f6"
+  },
+  "ios": {
+    "backgroundColor": "#f7f3f6",
+    "contentInset": "automatic",
+    "preferredContentMode": "mobile"
+  },
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#603B55"
+    }
+  }
+}

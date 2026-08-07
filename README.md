@@ -4,13 +4,35 @@ An independent, source-attributed preservation and UX reconstruction of the publ
 
 The preserved public header uses the exact BTEA wordmark published by the source portal. Its source, checksum, and permitted project scope are documented in [`BRANDING.md`](BRANDING.md). The native app icon and store identity remain original so the companion cannot be mistaken for an official government application.
 
-![Preserved BTEA public portal with source wordmark](btea-public-preserved-portal.png)
-
-![Hospitality Services Companion mobile application](store/screenshots/mobile-app-services.png)
-
 This project is not an official Bahrain Tourism and Exhibitions Authority service. It does not copy private portal code, bypass authentication, submit production applications, send SMS messages, or process money.
 
 The native iOS and Android product is deliberately named **Hospitality Services Companion** so its store identity cannot be confused with an official government app.
+
+## Product tour
+
+### Source-attributed public directory
+
+The public landing page exposes all 19 observed service surfaces before authentication and links every workflow back to its authoritative BTEA source.
+
+![Preserved BTEA public portal with source wordmark](btea-public-preserved-portal.png)
+
+### Operations workspace
+
+The responsive workspace combines service research, requirements, document readiness, local applications, inspections, outlets, payment preparation, and knowledge references.
+
+![Hospitality workspace service library](btea-hospitality-hub-expanded.png)
+
+### Privacy-safe complaint preparation
+
+The complaint reconstruction keeps verification and working records local, uses POST requests rather than URL parameters, and clearly separates the simulation from the official submission form.
+
+![Complaint preparation workflow](btea-complaint-workflow.png)
+
+### Native mobile companion
+
+The Capacitor mobile experience provides safe-area layouts, offline local data, network status, haptics, and a five-tab touch navigation model for iOS and Android.
+
+![Hospitality Services Companion mobile application](store/screenshots/mobile-app-services.png)
 
 ## Preserved public surface
 
